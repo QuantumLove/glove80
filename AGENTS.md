@@ -28,11 +28,12 @@ Outputs: `glove80_lh.uf2` (left half), `glove80_rh.uf2` (right half).
 
 ## Flash
 
-1. Enter bootloader mode: hold any key while plugging in USB. The keyboard mounts as a USB drive.
+1. Enter bootloader mode (power-up method): switch off, hold `Magic + E` (LEFT) or `I + PgDn` (RIGHT), then switch on while holding. Drive mounts as `GLV80LHBOOT` or `GLV80RHBOOT`. Slow-pulsing red LED confirms bootloader + USB connected.
 2. Drag the correct UF2 file onto the drive. Wait for the keyboard to reboot automatically.
 3. Left half gets `glove80_lh.uf2`. Right half gets `glove80_rh.uf2`. Do not mix the files.
+4. Flash RIGHT half first, then LEFT (moergo's recommended order).
 
-See `README §Flash` for the full procedure.
+Full procedure and ZMK method: `README §Flash` and https://docs.moergo.com/glove80-user-guide/customizing-key-layout/#putting-glove80-into-bootloader-for-firmware-loading
 
 ## Glossary
 

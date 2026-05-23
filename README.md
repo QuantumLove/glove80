@@ -29,29 +29,44 @@ First run: ~5-10 min (Docker pulls the image and west fetches ZMK source). Subse
 
 ## Recovery (bootloader)
 
-If the keyboard becomes unresponsive after flashing: hold any key on the affected half while plugging USB into that half's port. It mounts as a USB drive (`GLV80LHBOOT` or `GLV80RHBOOT`). Drag a known-good UF2 onto it to recover.
+Use the power-up method (works even if firmware is broken):
+
+**Left half:** switch off, connect USB, hold `Magic + E`, then switch power on while holding.
+**Right half:** switch off, connect USB, hold `I + PgDn`, then switch power on while holding.
+
+Drive mounts as `GLV80LHBOOT` or `GLV80RHBOOT`. Drag a known-good UF2 onto it to recover.
+
+LED next to the power switch: slow-pulsing red = bootloader mode + USB connected. Fast-flashing red = bootloader but no USB. Solid or off = not in bootloader mode.
+
+If the keyboard is on and working, you can also use the ZMK method: `Magic + Esc` (left) or `Magic + '` (right).
+
+Full details: https://docs.moergo.com/glove80-user-guide/customizing-key-layout/#putting-glove80-into-bootloader-for-firmware-loading
 
 Factory defaults: https://my.glove80.com/#/help.
 
 ## Flash
 
-After `./build.sh` succeeds:
+After `./build.sh` succeeds. Moergo recommends flashing the RIGHT half first, then the LEFT.
 
-**Left half:**
+**Right half (first):**
 
-1. Disconnect keyboard if connected
-2. Hold any key on the LEFT half while plugging USB into the LEFT half's USB-C port
-3. Drive mounts as `GLV80LHBOOT`
-4. Drag `glove80_lh.uf2` onto the drive
-5. Wait ~5-10s for reboot
+1. Switch off the RIGHT half's power switch
+2. Connect USB to the RIGHT half's port
+3. Hold `I + PgDn`, then switch power on while holding
+4. Drive mounts as `GLV80RHBOOT` (slow-pulsing red LED confirms bootloader + USB)
+5. Drag `glove80_rh.uf2` onto the drive — **MUST be the `_rh` file, NOT `_lh`**
+6. Wait ~5-10s for reboot
 
-**Right half:**
+**Left half (second):**
 
-1. Disconnect USB
-2. Hold any key on the RIGHT half while plugging USB into the RIGHT half's port
-3. Drive mounts as `GLV80RHBOOT`
-4. Drag `glove80_rh.uf2` onto the drive — **MUST be the `_rh` file, NOT `_lh`**
-5. Wait ~5-10s for reboot
+1. Switch off the LEFT half's power switch
+2. Connect USB to the LEFT half's USB-C port
+3. Hold `Magic + E`, then switch power on while holding
+4. Drive mounts as `GLV80LHBOOT`
+5. Drag `glove80_lh.uf2` onto the drive
+6. Wait ~5-10s for reboot
+
+See [Recovery (bootloader)](#recovery-bootloader) for the ZMK method (keyboard must already be on and working).
 
 On macOS Sonoma+: approve USB device permission in System Settings > Privacy & Security if prompted.
 
