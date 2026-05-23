@@ -1,8 +1,11 @@
-# ZMK build outputs — produced locally by build.sh, never committed
-glove80_lh.uf2
-glove80_rh.uf2
+# ZMK build outputs — produced by build.sh, never committed
 *.uf2
 build/
+
+# west workspace directories — created by west init/update, never committed
+.west/
+modules/
+zephyr/
 
 # macOS
 .DS_Store
@@ -14,6 +17,6 @@ build/
 .vscode/
 .zed/
 
-# direnv (if added later)
+# direnv
 .direnv/
 .envrc.local

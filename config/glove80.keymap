@@ -1,6 +1,5 @@
-// Copied verbatim from moergo-sc/glove80-zmk-config@34888be8c9d9a3d5b168a502b8b191ba43b4a1f3 on 2026-05-23.
-// Stock baseline — DO NOT modify bindings in V1.
-// Intent comments added above each layer block for learning purposes.
+// Verbatim from moergo-sc/glove80-zmk-config@34888be8c9d9a3d5b168a502b8b191ba43b4a1f3 (2026-05-23).
+// V1 stock baseline — bindings unchanged; intent comments added above each layer.
 /*
  * Copyright (c) 2020 The ZMK Contributors
  *

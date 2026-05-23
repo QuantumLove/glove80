@@ -2,21 +2,18 @@
 
 ## What this is
 
-Personal Glove80 keyboard firmware repository under the QuantumLove GitHub account. Uses ZMK (open-source keyboard firmware framework) and builds locally via Docker — no GitHub Actions required. V1 captures moergo's stock factory keymap in version control exactly as it came from the factory. Long-term goal: a keyboard-only macOS workflow built incrementally, one iteration at a time.
+Personal Glove80 firmware repo. V1 is moergo's stock factory keymap in version control, buildable locally via Docker. Long-term goal: keyboard-only macOS workflow, built one iteration at a time.
 
 ## Status (V1)
 
-V1 is the stock-factory baseline preserved verbatim in version control and locally buildable via Docker. ALL existing keyboard functionality is preserved: Bluetooth, RGB lighting, magic key, all default layers, factory layer, battery indicator. V1 does NOT add any customization. Customizations (Home Row Mods, Nav layer, etc.) come in later iterations. See ROADMAP.md for what's planned.
+V1 is the stock-factory baseline: all existing functionality preserved (Bluetooth, RGB, magic key, all layers, factory layer, battery indicator), locally buildable via Docker. No customizations yet. See [ROADMAP.md](ROADMAP.md).
 
 ## How this works
 
-This repo builds [ZMK](https://zmk.dev) firmware. ZMK is an open-source keyboard firmware framework built on top of the Zephyr RTOS — it runs directly on the keyboard's microcontroller and handles every keypress, layer, and Bluetooth connection.
-
-The build is managed by **west**, which is Zephyr's meta-tool and dependency manager. Think of it as `npm` for embedded firmware: it reads a manifest file and fetches the exact source code versions needed. Our `config/west.yml` is that manifest — it tells west exactly which version of ZMK source code to fetch.
-
-The resulting firmware is bundled into a **UF2** file. UF2 is a format that mass-storage bootloaders accept via drag-and-drop: when the keyboard is in bootloader mode, it appears as a USB drive, and you copy the UF2 onto it like any file. No special flashing tool needed.
-
-The `build.sh` script orchestrates all of this inside a Docker container so no local toolchain installation is needed on your machine.
+**ZMK** — open-source keyboard firmware framework (https://zmk.dev).
+**west** — Zephyr's dependency manager; `config/west.yml` pins the ZMK source version.
+**UF2** — firmware format accepted by mass-storage bootloaders via drag-and-drop.
+`build.sh` runs the build inside Docker — no local toolchain needed.
 
 ## Build (local Docker)
 
@@ -26,15 +23,15 @@ Prerequisites: Docker installed with daemon running (`docker info` should succee
 ./build.sh
 ```
 
-This produces `glove80_lh.uf2` (left half) and `glove80_rh.uf2` (right half) in the repo root.
+Produces `glove80_lh.uf2` (left half) and `glove80_rh.uf2` (right half) in the repo root.
 
-First run: ~5-10 min (Docker pulls the `zmkfirmware/zmk-dev-arm:3.5` image and west fetches ZMK source). Subsequent runs: ~2-3 min.
+First run: ~5-10 min (Docker pulls the image and west fetches ZMK source). Subsequent runs: ~2-3 min.
 
 ## Recovery (bootloader)
 
-If the keyboard becomes unresponsive after flashing: hold any key on the affected half while plugging USB into that half's port. The keyboard mounts as a mass-storage USB drive (`GLV80LHBOOT` or `GLV80RHBOOT`). Drag a known-good UF2 onto it to recover.
+If the keyboard becomes unresponsive after flashing: hold any key on the affected half while plugging USB into that half's port. It mounts as a USB drive (`GLV80LHBOOT` or `GLV80RHBOOT`). Drag a known-good UF2 onto it to recover.
 
-Factory defaults are downloadable from https://my.glove80.com/#/help.
+Factory defaults: https://my.glove80.com/#/help.
 
 ## Flash
 
@@ -44,16 +41,16 @@ After `./build.sh` succeeds:
 
 1. Disconnect keyboard if connected
 2. Hold any key on the LEFT half while plugging USB into the LEFT half's USB-C port
-3. A mass-storage drive mounts (likely `GLV80LHBOOT`)
-4. Drag `glove80_lh.uf2` onto the mounted drive
+3. Drive mounts as `GLV80LHBOOT`
+4. Drag `glove80_lh.uf2` onto the drive
 5. Wait ~5-10s for reboot
 
 **Right half:**
 
 1. Disconnect USB
 2. Hold any key on the RIGHT half while plugging USB into the RIGHT half's port
-3. A mass-storage drive mounts (likely `GLV80RHBOOT`)
-4. Drag `glove80_rh.uf2` onto the mounted drive — **MUST be the `_rh` file, NOT `_lh`**
+3. Drive mounts as `GLV80RHBOOT`
+4. Drag `glove80_rh.uf2` onto the drive — **MUST be the `_rh` file, NOT `_lh`**
 5. Wait ~5-10s for reboot
 
 On macOS Sonoma+: approve USB device permission in System Settings > Privacy & Security if prompted.
@@ -62,31 +59,27 @@ After firmware version changes: power-cycle both halves and re-pair if halves do
 
 ## Test
 
-Open **https://www.keyboardchecker.com** (or https://en.key-test.ru) — a web page that shows a visual keyboard and lights up every key as you press it. Work through each category below.
+Open **https://www.keyboardchecker.com** and press every key. Work through each category:
 
 **Typing keys:**
-- Letters A-Z (hit keys from both halves)
+- Letters A-Z (both halves)
 - Digits 0-9
 - Punctuation: `` ` ``, `-`, `=`, `[`, `]`, `\`, `;`, `'`, `,`, `.`, `/`
 
 **Modifiers:**
-- LShift, RShift
-- LCtrl, RCtrl
-- LAlt/Option, RAlt
-- LCmd/Gui, RCmd
+- LShift, RShift, LCtrl, RCtrl, LAlt/Option, RAlt, LCmd/Gui, RCmd
 
 **Whitespace and control:**
 - Space, Enter, Tab, Backspace, Delete, Escape
 
 **Navigation:**
-- Arrow keys (up, down, left, right)
-- Home, End, PgUp, PgDn
+- Arrow keys, Home, End, PgUp, PgDn
 
 **Function keys:**
-- F1-F12 via stock layers
+- F1-F10 on base layer; F11-F12 via LOWER layer (hold the LOWER thumb key)
 
 **Bluetooth:**
-- Pair with a second device, type a few sentences, verify keystrokes register there
+- Pair with a second device, type a few sentences, verify keystrokes register
 
 **RGB lighting:**
 - Visible underglow in factory default mode
