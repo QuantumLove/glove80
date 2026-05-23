@@ -1,0 +1,19 @@
+# ZMK build outputs — produced locally by build.sh, never committed
+glove80_lh.uf2
+glove80_rh.uf2
+*.uf2
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs / editors
+.idea/
+.vscode/
+.zed/
+
+# direnv (if added later)
+.direnv/
+.envrc.local
