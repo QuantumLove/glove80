@@ -1,5 +1,7 @@
 # AGENTS.md
 
+## What this repo is
+
 This is the QuantumLove/glove80 repo: a Glove80 ZMK keyboard firmware. V1 is the stock baseline, preserved as-is. All agents work in pedagogical mode (see below), meaning every change is explained so the repo owner learns along. Do not treat this as a generic firmware project; read this file before touching anything.
 
 ---
