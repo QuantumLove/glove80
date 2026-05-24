@@ -45,12 +45,27 @@ Full procedure and ZMK method: `README §Flash` and https://docs.moergo.com/glov
 - **default_layer**: the layer active when no other layer is held; the base typing layer the keyboard starts on.
 - **magic key**: Moergo's special key that activates the Magic layer (RGB control, Bluetooth profile switching, factory reset).
 - **mass-storage bootloader**: recovery mode where the keyboard presents as a USB drive for drag-and-drop firmware installation.
+- **HRM** (Home Row Mod): a key on the home row that types its letter when tapped and acts as a modifier (Shift/Ctrl/Alt/Cmd) when held. V2 adds HRMs on A/S/D/F and J/K/L/;.
+- **hold-tap behavior**: ZMK primitive — one key, two outputs, chosen by whether it was tapped or held. Used by V1's `layer_td` and `magic` keys; V2 adds eight more for the home row.
+- **mod-tap (`&mt`)**: ZMK's stock hold-tap whose hold side is a modifier. V2 doesn't use `&mt` directly because HRM needs finer tuning (per-finger timing, positional triggers, idle decay).
+- **positional hold-tap**: a hold-tap that also checks which other key was pressed during the hold window. If the other key is on the same hand, the HRM resolves to a tap (letter); if on the opposite hand, to a hold (modifier). Implemented via the `hold-trigger-key-positions` property and is the primary defense against accidental modifier activation during fast typing.
+- **bilateral combinations**: the touch-typing convention that modifier-key chords use one hand to hold the modifier and the other to tap the modified key. V2 enforces this in firmware via positional hold-taps plus the two bilateral enforcement layers.
+- **bilateral enforcement layer**: a layer that overrides the same-hand home-row keys to plain `&kp` whenever an HRM on that hand is held. Prevents same-hand modifier chords from accidentally firing.
+- **conditional layer**: a ZMK construct that auto-activates one layer when one or more others are already active. Not used in V2; reserved vocabulary for V3+.
+- **`tapping-term-ms`**: how long a hold-tap key must be held before its hold side can fire. The "sensitivity" knob — lower = more sensitive (more misfires); higher = slower hold response.
+- **`quick-tap-ms`** ("repeat decay"): if the same hold-tap key was tapped within the last N ms, the next press is forced to be a tap. Lets you do "tap-then-hold" for OS-level key auto-repeat.
+- **`require-prior-idle-ms`** ("streak decay"): the hold side cannot fire if any key was pressed in the last N ms. The major anti-misfire knob for fast typists.
+- **`hold-while-undecided`**: ZMK property that pre-presses the hold side during the undecided window so releasing the key without pressing another still emits the tap letter. Powers SHIFT_FORGIVENESS.
+- **CAGS** / **GACS**: home-row modifier orderings. GACS = Gui/Alt/Ctrl/Shift from pinky to index (Linux/Windows default). CAGS = Ctrl/Alt/Cmd/Shift (macOS — swaps Gui and Ctrl so Cmd sits on the strong middle finger).
+- **DIFFICULTY_LEVEL**: sunaku's preset for HRM sensitivity (1=500ms novice → 5=100ms expert). One `#define` retunes every per-finger timing. V2 ships at level 2 (400ms).
 
 ## Scope Boundaries
 
-**In V1:** stock baseline keymap, local Docker build via `./build.sh`, human-tier verification (flash + keyboard checker).
+**In V1:** stock baseline keymap, local Docker build via `./build.sh`, human-tier verification (flash + keyboard checker). V1 is preserved in git at commit `a61129d`.
 
-**Out of V1 scope** (tracked in `ROADMAP.md`): home-row mods, custom layers/macros/combos, OS-specific bindings, GitHub Actions CI, Nix flake build.
+**In V2 (current):** V1 plus sunaku-flavored home-row mods on A/S/D/F + J/K/L/; with CAGS modifier order (macOS-tuned), `DIFFICULTY_LEVEL` 2 (400 ms hold), `SHIFT_FORGIVENESS` and `ENFORCE_BILATERAL` enabled. Two bilateral-enforcement layers added (`BILATERAL_LH`, `BILATERAL_RH`).
+
+**Out of current scope** (tracked in `ROADMAP.md`): nav layer (V3), symbol/numpad layer (V4), Hyper layer (V5), OS integrations (V6+), GitHub Actions CI, Nix flake build.
 
 ## Working Conventions
 

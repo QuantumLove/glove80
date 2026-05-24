@@ -4,9 +4,43 @@
 
 Personal Glove80 firmware repo. V1 is moergo's stock factory keymap in version control, buildable locally via Docker. Long-term goal: keyboard-only macOS workflow, built one iteration at a time.
 
-## Status (V1)
+## Status (V2 — Home Row Mods)
 
-V1 is the stock-factory baseline: all existing functionality preserved (Bluetooth, RGB, magic key, all layers, factory layer, battery indicator), locally buildable via Docker. No customizations yet. See [ROADMAP.md](ROADMAP.md).
+V2 adds **sunaku-flavored Home Row Mods** on top of V1's stock baseline. Everything V1 had still works (lower layer, magic layer, Bluetooth, RGB, factory layer, battery indicator); only the home row (A S D F and J K L ;) gained a second behavior. V1 stays preserved in git at commit `a61129d` for reference and rollback.
+
+V1 is the stock-factory baseline: all existing functionality preserved (Bluetooth, RGB, magic key, all layers, factory layer, battery indicator), locally buildable via Docker.
+
+See [ROADMAP.md](ROADMAP.md).
+
+## How V2 Home Row Mods work
+
+**Home Row Mod (HRM):** a key that types its letter when tapped and acts as a modifier (Shift, Ctrl, Alt, Cmd) when held. Goal: never leave the home row to chord modifiers.
+
+**Modifier layout (CAGS, macOS-tuned):** Ctrl on the pinkies, Alt on the rings, **Cmd on the middles**, Shift on the indices. So:
+
+```
+Left  home row:   A=Ctrl  S=Alt   D=Cmd   F=Shift     G=plain
+Right home row:                                       H=plain     J=Shift K=Cmd   L=Alt  ;=Ctrl
+```
+
+Tap each key normally — you get the letter. Hold it for a beat — you get the modifier. Cmd+C, for example, is: hold **K** (right-hand Cmd) on the right hand, tap **C** with the left.
+
+**Use the opposite hand for chords.** Same-hand chords (Cmd on D, then A) are blocked by design — the firmware enforces "one hand holds, the other taps". This is called *bilateral enforcement* and it's the main reason HRM doesn't misfire.
+
+**Sensitivity** is governed by one `#define` in [config/glove80.keymap](config/glove80.keymap):
+
+```
+#define DIFFICULTY_LEVEL 2   // 1=500ms, 2=400ms, 3=300ms, 4=200ms, 5=100ms
+```
+
+V2 ships at level 2 (400 ms hold time). Lower the number, longer the hold needed before a key counts as a modifier. Bump it up as your hands learn.
+
+**Two safety nets are on:**
+
+- **Shift forgiveness** — hold F or J and release it without pressing anything else, you get the letter (not silence).
+- **Streak decay** — if you typed any key in the last 400 ms, an HRM hold is forced to stay a letter. Prevents mid-word misfires.
+
+**Auto-repeat** still works: tap a key once, then immediately hold it. You get the letter repeating (Cmd+A doesn't auto-fire, but `aaaa` does).
 
 ## How this works
 
