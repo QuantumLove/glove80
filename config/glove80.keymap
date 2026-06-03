@@ -65,7 +65,7 @@
 //   5 = 100 ms (expert, lots of misfires until your hands learn)
 // Bump it up as your fingers get used to HRM. Lower the number, longer the
 // hold needed before a key counts as a modifier.
-#define DIFFICULTY_LEVEL 2
+#define DIFFICULTY_LEVEL 3
 
 // TAPPING_RESOLUTION — the "base" hold time derived from DIFFICULTY_LEVEL.
 // Formula matches sunaku exactly: level 2 → (6 - 2) * 100 = 400 ms.
