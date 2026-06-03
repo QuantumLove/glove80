@@ -335,6 +335,21 @@
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
         };
+
+        // V3: wispr hold-tap for Wispr Flow dictation.
+        //   HOLD = F18 (push-to-talk), TAP = F19 (toggle)
+        //
+        // tap-preferred: only resolves to hold if held past tapping-term-ms.
+        // Safer for a frequently-tapped key — better to miss a push-to-talk
+        // than misfire it.
+        wispr: wispr_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "WISPR_HOLD_TAP";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     macros {
