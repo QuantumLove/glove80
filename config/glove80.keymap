@@ -165,13 +165,19 @@
 // =============================================================================
 // LAYER NUMBERS
 // =============================================================================
-// V1 layers preserved. V2 adds two bilateral enforcement layers underneath.
+// V1 layers preserved. V2 added two bilateral enforcement layers underneath.
+// V3 adds CURSOR + MOUSE + three Mouse speed sublayers.
 #define DEFAULT      0
 #define LOWER        1
 #define MAGIC        2
 #define FACTORY_TEST 3
 #define BILATERAL_LH 4
 #define BILATERAL_RH 5
+#define CURSOR       6
+#define MOUSE        7
+#define MOUSE_SLOW   8
+#define MOUSE_FAST   9
+#define MOUSE_WARP   10
 
 / {
     behaviors {
@@ -525,6 +531,71 @@
             &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &kp J   &kp K   &kp L   &kp SEMI &trans
             &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans                                      &trans  &trans  &trans  &trans  &trans  &trans
             &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans      &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // =====================================================================
+        // V3: CURSOR layer (text navigation). Stubbed in Task 2; filled in
+        // Tasks 6–7. While stubbed, all positions are &trans → no behavior
+        // change vs. V2.
+        // =====================================================================
+        cursor_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE base layer (pointer + buttons + scroll). Stub; filled Task 9.
+        mouse_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE_SLOW sublayer (precision). Same key positions as MOUSE,
+        // but with reduced movement scaler (set up in Task 10). Filled Task 10.
+        mouse_slow_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE_FAST sublayer (fast travel). Filled Task 10.
+        mouse_fast_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE_WARP sublayer (screen-crossing). Filled Task 10.
+        mouse_warp_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
