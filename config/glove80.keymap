@@ -447,6 +447,41 @@
                 , <&macro_release &kp MACRO_PLACEHOLDER>
                 ;
         };
+
+        // =====================================================================
+        // V3: selection-helper macros for the Cursor layer.
+        // =====================================================================
+
+        // select_all — Cmd+A. Wrapped as a macro (not a plain &kp) so the
+        // Cursor layer can reference it by name like sunaku does.
+        select_all: select_all {
+            label = "SELECT_ALL";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(A)>;
+        };
+
+        // select_line — jump to start of line, then shift+select to end.
+        // macOS line-start is Cmd+Left; line-end is Cmd+Right.
+        select_line: select_line {
+            label = "SELECT_LINE";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <1>;
+            tap-ms = <1>;
+            bindings = <&kp LG(LEFT)>, <&kp LG(LS(RIGHT))>;
+        };
+
+        // select_word — jump to start of word, then shift+select to end.
+        // macOS word-start is Option+Left; word-end is Option+Right.
+        select_word: select_word {
+            label = "SELECT_WORD";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <1>;
+            tap-ms = <1>;
+            bindings = <&kp LA(LEFT)>, <&kp LA(LS(RIGHT))>;
+        };
     };
 
     keymap {
