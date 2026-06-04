@@ -45,6 +45,7 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/pointing.h>
+#include <input/processors.dtsi>
 
 #define HYPER LC(LS(LG(LALT)))
 
@@ -696,4 +697,50 @@
     time-to-max-speed-ms = <300>;
     acceleration-exponent = <0>;
     delay-ms = <0>;
+};
+
+// =============================================================================
+// V3: Input-listener speed scalers for Mouse sublayers.
+// =============================================================================
+// urob's input-listener pattern: instead of duplicating the MOUSE layer three
+// times (one per speed), we use a single MOUSE layer and three zero-key sublayers
+// (MOUSE_SLOW, MOUSE_FAST, MOUSE_WARP). When a sublayer is co-active, the
+// listener intercepts every HID mouse-move event and applies the matching scaler
+// before it reaches the host.
+//
+// zip_xy_scaler <numerator> <denominator> — multiplies raw motion by num/denom.
+//   MOUSE_SLOW  = 1/4 (precision work: pixel-level drag, click on small targets)
+//   MOUSE_FAST  = 2/1 (cross-pane sweeps without leaving the home row)
+//   MOUSE_WARP  = 6/1 (full-screen jumps)
+//
+// zip_scroll_scaler does the same for scroll events. WARP is omitted from the
+// scroll listener: a 6x scroll burst is almost never useful and easy to misfire.
+//
+// The three sublayer keymaps stay all-&trans — their only role is to signal
+// the active scaler. No bindings needed.
+
+&mmv_input_listener {
+    precision {
+        layers = <MOUSE_SLOW>;
+        input-processors = <&zip_xy_scaler 1 4>;
+    };
+    warp {
+        layers = <MOUSE_WARP>;
+        input-processors = <&zip_xy_scaler 6 1>;
+    };
+    fast {
+        layers = <MOUSE_FAST>;
+        input-processors = <&zip_xy_scaler 2 1>;
+    };
+};
+
+&msc_input_listener {
+    precision {
+        layers = <MOUSE_SLOW>;
+        input-processors = <&zip_scroll_scaler 1 4>;
+    };
+    fast {
+        layers = <MOUSE_FAST>;
+        input-processors = <&zip_scroll_scaler 2 1>;
+    };
 };
