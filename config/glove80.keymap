@@ -95,6 +95,22 @@
 // "tap, then hold" for OS-level key auto-repeat: tap A once, hold A → "aaaa".
 #define HOMEY_REPEAT_DECAY (TAPPING_RESOLUTION + 150)
 
+// =============================================================================
+// V3 MOUSE CONFIGURATION
+// =============================================================================
+// Tuning the ZMK pointing subsystem. Defaults are conservative; these values
+// match sunaku's choices and feel reactive without being twitchy on 1440p+.
+//
+// MOUSE_MOVE_MAX — peak cursor speed (pixels per tick at full speed).
+//   Higher = cursor crosses screen faster. 600 is sunaku's default for HiDPI.
+// MOUSE_SCROLL_MAX — peak scroll speed (lines per tick).
+//   Lower than move because scroll is per-line, not per-pixel.
+// MOUSE_TIME_TO_MAX — ramp duration from 0 to peak (ms).
+//   300 ms feels real-mouse-like; <200 ms is twitchy; >500 ms feels sluggish.
+// MOUSE_ACCEL_EXP — 0 = linear ramp, 1 = quadratic (gaming-mouse feel).
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 600
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
+
 // CAGS modifier order (macOS-tuned). Pinky → index = Ctrl, Alt, Cmd, Shift.
 // Mirrored on both hands. On macOS, Cmd lands on the strong middle finger
 // where Ctrl lives on Linux/Windows — because Cmd is the everyday shortcut
@@ -649,4 +665,24 @@
             >;
         };
     };
+};
+
+// =============================================================================
+// V3: Mouse motion + scroll tuning.
+// =============================================================================
+// Reference overrides for the built-in &mmv (mouse move) and &msc (mouse
+// scroll) behaviors. acceleration-exponent=1 = quadratic feel like a real
+// mouse. time-to-max-speed-ms = ramp duration; 300 ms is sunaku's default.
+// delay-ms=0: no artificial delay before movement starts.
+
+&mmv {
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <1>;
+    delay-ms = <0>;
+};
+
+&msc {
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <0>;
+    delay-ms = <0>;
 };
