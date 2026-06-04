@@ -20,3 +20,7 @@ zephyr/
 # direnv
 .direnv/
 .envrc.local
+
+# Agentic / compound-engineering working artifacts — process notes, not project docs
+docs/superpowers/
+.compound-engineering/
