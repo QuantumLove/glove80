@@ -368,6 +368,21 @@
             tapping-term-ms = <200>;
             bindings = <&kp>, <&kp>;
         };
+
+        // V3: Hyper hold-tap.
+        // Used on the LH upper-outer thumb (replaces redundant LSHFT).
+        // tap-preferred: a brief hold + release types LSHFT, not Hyper.
+        // Higher tapping-term than wispr because Hyper triggers OS-level
+        // keyboard automations (Raycast, Hammerspoon) where misfires are
+        // user-visible — better to require a deliberate hold.
+        hyper_mt: hyper_mt {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HYPER_MT";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <250>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     macros {
@@ -525,7 +540,7 @@
             &kp EQUAL      &kp N1   &kp N2      &kp N3      &kp N4      &kp N5                                                                                              &kp N6  &kp N7  &kp N8                &kp N9                &kp N0                &kp MINUS
             &kp TAB        &kp Q    &kp W       &kp E       &kp R       &kp T                                                                                               &kp Y   &kp U   &kp I                 &kp O                 &kp P                 &kp BSLH
             &kp ESC        &hml_pinky LH_PINKY_MOD A   &hml_ringy LH_RINGY_MOD S   &hml_middy LH_MIDDY_MOD D   &hml_index LH_INDEX_MOD F   &kp G                                     &kp H   &hmr_index RH_INDEX_MOD J   &hmr_middy RH_MIDDY_MOD K   &hmr_ringy RH_RINGY_MOD L   &hmr_pinky RH_PINKY_MOD SEMI   &kp SQT
-            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &wispr F18 F19                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
+            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &hyper_mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &wispr F18 F19                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
             &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &kp BSPC    &kp DEL     &mo CURSOR &mo MOUSE  &kp RET   &kp SPACE                                     &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
             >;
         };
