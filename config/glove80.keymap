@@ -592,11 +592,11 @@
         cursor_layer {
             bindings = <
             &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &kp LS(TAB)  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &kp LS(TAB)  &kp LG(Z)  &kp LG(LS(Z))  &kp TAB  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &kp LEFT  &kp UP  &kp DOWN  &kp RIGHT  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &kp LG(LEFT)  &kp PG_UP  &kp PG_DN  &kp LG(RIGHT)  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &kp LG(F)  &kp LG(LS(G))  &kp LG(G)  &trans  &trans
             >;
         };
 
