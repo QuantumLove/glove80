@@ -21,6 +21,18 @@ All V2 features still work. V1 baseline still preserved in git at commit `a61129
 
 See [ROADMAP.md](ROADMAP.md).
 
+## Visual keymap
+
+A rendered diagram of every layer (default, Cursor, Mouse, Mouse speed sublayers, Lower, Magic) lives at [`docs/keymap.svg`](docs/keymap.svg). It's auto-generated from `config/glove80.keymap` and matches whatever ships in the current commit. Open it in any browser to see what each key does on each layer.
+
+To regenerate after editing the keymap:
+
+```bash
+./bin/draw-keymap.sh
+```
+
+Requires `uv` (`brew install uv`). The script fetches `keymap-drawer` via `uvx` on first run and caches it; subsequent runs take a few seconds. Outputs `docs/keymap.yaml` (intermediate) and `docs/keymap.svg` (the diagram).
+
 ## How V3 works
 
 **Cursor layer** activates by holding the left inner-lower thumb (was Alt). The right hand provides navigation: home row = arrows, row below = line/page nav, bottom row = find. The left hand provides editing: sticky shift on the outer column (tap once, next key is shifted), select_word/select_line/select_all macros, and copy/cut/paste/undo/redo.
