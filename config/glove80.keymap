@@ -633,25 +633,32 @@
             >;
         };
 
-        // V3: MOUSE base layer (pointer + buttons + scroll). Filled Task 9.
+        // V3: MOUSE base layer — adapted from sunaku's Glorious Engrammer.
         //
-        // Left hand — movement cluster (inverted-T):
-        //   row 3: scroll-left, MOVE_UP, scroll-right
-        //   row 4: MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT
-        //   row 5: scroll-up, scroll-down
-        // Right hand — buttons + speed sublayers + mirror movement:
-        //   row 3: LCLK, MCLK, RCLK
-        //   row 4: speed sublayers (FAST / WARP / SLOW), MB4 on outer
-        //   row 5: mirror movement L/U/D/R, MB5 on outer
-        // Thumb: left T5 = &mkp LCLK (drag handle)
+        // Movement (inverted-T) on both hands; scroll mirrored on outer columns.
+        //   LH row 2 (W/E/R):  scroll-left, MOVE_UP, scroll-right
+        //   LH row 3 (A→G):    scroll-up,  MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT, scroll-up
+        //   LH row 4 (Z→B):    scroll-dn,  SLOW, WARP, FAST, scroll-dn
+        //   LH row 5 (X/C/V):  cut, copy, paste
+        //   LH thumb row 4:    MCLK, K_APP (context menu), MB5
+        //   LH thumb row 5:    LCLK, RCLK, MB4   ← drag = hold LCLK on T5
+        //
+        //   RH row 2 (Y→P):    scroll-left, LCLK, MCLK, RCLK, scroll-right
+        //   RH row 3 (H→;):    scroll-up,  FAST, WARP, SLOW, K_APP, MB4
+        //   RH row 4 (N→/):    scroll-dn,  MOVE_LEFT, MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MB5
+        //   RH thumb row 4:    cut, copy, paste
+        //
+        // Scroll keys appear at A/G/Y/P (vertical scroll up) and Z/B/N/PGUP
+        // (down), so any single finger on either home row can reach scroll
+        // without moving away from the movement cluster.
         mouse_layer {
             bindings = <
-            &trans  &trans  &trans              &trans            &trans                                                                                                                              &trans  &trans               &trans               &trans                &trans
-            &trans  &trans  &trans              &trans            &trans              &trans                                                                                                  &trans  &trans  &trans               &trans                &trans                &trans
-            &trans  &trans  &msc SCRL_LEFT      &mmv MOVE_UP      &msc SCRL_RIGHT     &trans                                                                                                  &trans  &mkp LCLK            &mkp MCLK            &mkp RCLK             &trans                &trans
-            &trans  &trans  &mmv MOVE_LEFT      &mmv MOVE_DOWN    &mmv MOVE_RIGHT     &trans                                                                                                  &trans  &mo MOUSE_FAST       &mo MOUSE_WARP       &mo MOUSE_SLOW        &trans                &mkp MB4
-            &trans  &trans  &msc SCRL_UP        &msc SCRL_DOWN    &trans              &trans      &trans     &trans     &mkp LCLK  &trans  &trans  &trans                                    &trans  &mmv MOVE_LEFT       &mmv MOVE_UP         &mmv MOVE_DOWN        &mmv MOVE_RIGHT       &mkp MB5
-            &trans  &trans  &trans              &trans            &trans                          &mkp LCLK  &mkp RCLK  &mkp MB4   &trans  &trans  &trans                                            &trans               &trans               &trans                &trans                &trans
+            &trans  &trans  &trans  &trans  &trans                                                                                                              &trans          &trans           &trans           &trans           &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                                              &trans  &trans          &trans           &trans           &trans           &trans
+            &trans  &trans  &msc SCRL_LEFT  &mmv MOVE_UP  &msc SCRL_RIGHT  &trans                                                              &msc SCRL_LEFT  &mkp LCLK       &mkp MCLK        &mkp RCLK        &msc SCRL_RIGHT  &trans
+            &trans  &msc SCRL_UP  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &msc SCRL_UP                                                    &msc SCRL_UP  &mo MOUSE_FAST  &mo MOUSE_WARP   &mo MOUSE_SLOW   &kp K_APP        &mkp MB4
+            &trans  &msc SCRL_DOWN  &mo MOUSE_SLOW  &mo MOUSE_WARP  &mo MOUSE_FAST  &msc SCRL_DOWN  &mkp MCLK  &kp K_APP  &mkp MB5  &kp LG(X)  &kp LG(C)  &kp LG(V)  &msc SCRL_DOWN  &mmv MOVE_LEFT  &mmv MOVE_UP     &mmv MOVE_DOWN   &mmv MOVE_RIGHT  &mkp MB5
+            &trans  &trans  &kp LG(X)  &kp LG(C)  &kp LG(V)          &mkp LCLK  &mkp RCLK  &mkp MB4  &trans  &trans  &trans                          &trans          &trans           &trans           &trans           &trans
             >;
         };
 
