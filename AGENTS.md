@@ -69,7 +69,7 @@ Full procedure and ZMK method: `README §Flash` and https://docs.moergo.com/glov
 - CURSOR layer (text navigation) on LH lower-inner thumb
 - MOUSE layer (pointer control) on RH lower-inner thumb, with three speed sublayers (MOUSE_SLOW, MOUSE_FAST, MOUSE_WARP)
 - Hyper key (`&mt HYPER LSHFT`) on LH upper-outer thumb
-- Wispr Flow hotkey (`&wispr F18 F19`) on RH upper-outer thumb
+- Wispr Flow hotkey (`&wispr LG(F18) LG(F19)`) on RH upper-outer thumb (Cmd+F18 hold / Cmd+F19 tap — Wispr requires a modifier)
 - `CONFIG_ZMK_POINTING=y` for mouse subsystem
 - Mouse motion tuning matched to sunaku's defaults
 

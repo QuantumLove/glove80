@@ -13,7 +13,7 @@ All V2 features still work. V3 adds Cursor and Mouse top-level layers, three Mou
 - Mouse layer (hold RH lower-inner thumb): inverted-T movement, three buttons + MB4/MB5, scroll, drag (LCLK on left thumb T5)
 - Mouse speed sublayers (held with RH index/middle/ring on Mouse layer): SLOW (1/4x), FAST (2x), WARP (6x)
 - Hyper key on LH upper-outer thumb: `&mt HYPER LSHFT` (hold=Hyper, tap=Shift)
-- Wispr Flow hotkey on RH upper-outer thumb: F18 hold / F19 tap
+- Wispr Flow hotkey on RH upper-outer thumb: Cmd+F18 hold / Cmd+F19 tap
 - `CONFIG_ZMK_POINTING=y` for the mouse subsystem
 
 ## Planned (V4+)

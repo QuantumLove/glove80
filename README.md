@@ -13,7 +13,7 @@ V3 adds two new layers on top of V2's HRM baseline:
 
 Two new direct keys on the default layer:
 - **Hyper** (Cmd+Opt+Ctrl+Shift) — hold the **left upper-outer thumb**. Tap that thumb for plain Shift (HRM-equivalent fallback).
-- **Wispr Flow dictation** — **right upper-outer thumb**. Hold = F18 (push-to-talk); tap = F19 (toggle). Configure Wispr Flow on the host to use these hotkeys.
+- **Wispr Flow dictation** — **right upper-outer thumb**. Hold = Cmd+F18 (push-to-talk); tap = Cmd+F19 (toggle). Configure Wispr Flow on the host to use these hotkeys. Plain F-keys don't work — Wispr requires at least one modifier.
 
 The inner-lower thumb keys (previously Alt) are now layer activators. Alt is handled exclusively by the S-finger (LH) and L-finger (RH) HRMs.
 
