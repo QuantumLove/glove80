@@ -63,9 +63,17 @@ Full procedure and ZMK method: `README §Flash` and https://docs.moergo.com/glov
 
 **In V1:** stock baseline keymap, local Docker build via `./build.sh`, human-tier verification (flash + keyboard checker). V1 is preserved in git at commit `a61129d`.
 
-**In V2 (current):** V1 plus sunaku-flavored home-row mods on A/S/D/F + J/K/L/; with CAGS modifier order (macOS-tuned), `DIFFICULTY_LEVEL` 2 (400 ms hold), `SHIFT_FORGIVENESS` and `ENFORCE_BILATERAL` enabled. Two bilateral-enforcement layers added (`BILATERAL_LH`, `BILATERAL_RH`).
+**In V2:** V1 plus sunaku-flavored home-row mods on A/S/D/F + J/K/L/; with CAGS modifier order (macOS-tuned), `DIFFICULTY_LEVEL` (currently 3 = 300 ms hold), `SHIFT_FORGIVENESS` and `ENFORCE_BILATERAL` enabled. Two bilateral-enforcement layers (`BILATERAL_LH`, `BILATERAL_RH`).
 
-**Out of current scope** (tracked in `ROADMAP.md`): nav layer (V3), symbol/numpad layer (V4), Hyper layer (V5), OS integrations (V6+), GitHub Actions CI, Nix flake build.
+**In V3 (current):** V2 plus:
+- CURSOR layer (text navigation) on LH lower-inner thumb
+- MOUSE layer (pointer control) on RH lower-inner thumb, with three speed sublayers (MOUSE_SLOW, MOUSE_FAST, MOUSE_WARP)
+- Hyper key (`&mt HYPER LSHFT`) on LH upper-outer thumb
+- Wispr Flow hotkey (`&wispr F18 F19`) on RH upper-outer thumb
+- `CONFIG_ZMK_POINTING=y` for mouse subsystem
+- Mouse motion tuning matched to sunaku's defaults
+
+**Out of current scope** (tracked in `ROADMAP.md`): Symbols/Numpad layer (V4), app-switching combos (V5), OS integrations (V6+), GitHub Actions CI, Nix flake build.
 
 ## Working Conventions
 

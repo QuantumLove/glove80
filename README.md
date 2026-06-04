@@ -4,13 +4,30 @@
 
 Personal Glove80 firmware repo. V1 is moergo's stock factory keymap in version control, buildable locally via Docker. Long-term goal: keyboard-only macOS workflow, built one iteration at a time.
 
-## Status (V2 — Home Row Mods)
+## Status (V3 — Cursor + Mouse Layers)
 
-V2 adds **sunaku-flavored Home Row Mods** on top of V1's stock baseline. Everything V1 had still works (lower layer, magic layer, Bluetooth, RGB, factory layer, battery indicator); only the home row (A S D F and J K L ;) gained a second behavior. V1 stays preserved in git at commit `a61129d` for reference and rollback.
+V3 adds two new layers on top of V2's HRM baseline:
 
-V1 is the stock-factory baseline: all existing functionality preserved (Bluetooth, RGB, magic key, all layers, factory layer, battery indicator), locally buildable via Docker.
+- **Cursor layer** (text navigation) — hold the **left inner-lower thumb** to access arrows, page nav, find, undo/redo, copy/cut/paste, selection helpers, and sticky shift for shift-select workflows.
+- **Mouse layer** (pointer control) — hold the **right inner-lower thumb** for an inverted-T cursor cluster (left hand), mouse buttons (right hand), scroll (outer columns), and three speed sublayers (Slow=1/4, Fast=2x, Warp=6x) reachable from the Mouse layer's right hand.
+
+Two new direct keys on the default layer:
+- **Hyper** (Cmd+Opt+Ctrl+Shift) — hold the **left upper-outer thumb**. Tap that thumb for plain Shift (HRM-equivalent fallback).
+- **Wispr Flow dictation** — **right upper-outer thumb**. Hold = F18 (push-to-talk); tap = F19 (toggle). Configure Wispr Flow on the host to use these hotkeys.
+
+The inner-lower thumb keys (previously Alt) are now layer activators. Alt is handled exclusively by the S-finger (LH) and L-finger (RH) HRMs.
+
+All V2 features still work. V1 baseline still preserved in git at commit `a61129d`.
 
 See [ROADMAP.md](ROADMAP.md).
+
+## How V3 works
+
+**Cursor layer** activates by holding the left inner-lower thumb (was Alt). The right hand provides navigation: home row = arrows, row below = line/page nav, bottom row = find. The left hand provides editing: sticky shift on the outer column (tap once, next key is shifted), select_word/select_line/select_all macros, and copy/cut/paste/undo/redo.
+
+**Mouse layer** activates by holding the right inner-lower thumb (was Alt). Left hand controls movement via an inverted-T cluster (up on the ring-finger row, left/down/right on the home row). Right hand provides the three mouse buttons (index/middle/ring, row 3), speed sublayers (row 4), and a mirror movement cluster (row 5) for one-handed use. Drag: hold the left thumb T5 key (LCLK) while moving the cursor with the other hand.
+
+**Speed sublayers** are held simultaneously with the Mouse layer. While on the Mouse layer, hold the right-hand index (Fast=2x), middle (Warp=6x), or ring (Slow=1/4) finger row-4 key to scale cursor speed up or down.
 
 ## How V2 Home Row Mods work
 
@@ -30,15 +47,15 @@ Tap each key normally — you get the letter. Hold it for a beat — you get the
 **Sensitivity** is governed by one `#define` in [config/glove80.keymap](config/glove80.keymap):
 
 ```
-#define DIFFICULTY_LEVEL 2   // 1=500ms, 2=400ms, 3=300ms, 4=200ms, 5=100ms
+#define DIFFICULTY_LEVEL 3   // 1=500ms, 2=400ms, 3=300ms, 4=200ms, 5=100ms
 ```
 
-V2 ships at level 2 (400 ms hold time). Lower the number, longer the hold needed before a key counts as a modifier. Bump it up as your hands learn.
+Currently at level 3 (300 ms hold time). Lower the number, longer the hold needed before a key counts as a modifier. Bump it up as your hands learn.
 
 **Two safety nets are on:**
 
 - **Shift forgiveness** — hold F or J and release it without pressing anything else, you get the letter (not silence).
-- **Streak decay** — if you typed any key in the last 400 ms, an HRM hold is forced to stay a letter. Prevents mid-word misfires.
+- **Streak decay** — if you typed any key in the last 300 ms, an HRM hold is forced to stay a letter. Prevents mid-word misfires.
 
 **Auto-repeat** still works: tap a key once, then immediately hold it. You get the letter repeating (Cmd+A doesn't auto-fire, but `aaaa` does).
 
