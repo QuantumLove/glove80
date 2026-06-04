@@ -44,6 +44,8 @@
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <input/processors.dtsi>
 
 #define HYPER LC(LS(LG(LALT)))
 
@@ -65,7 +67,7 @@
 //   5 = 100 ms (expert, lots of misfires until your hands learn)
 // Bump it up as your fingers get used to HRM. Lower the number, longer the
 // hold needed before a key counts as a modifier.
-#define DIFFICULTY_LEVEL 2
+#define DIFFICULTY_LEVEL 3
 
 // TAPPING_RESOLUTION — the "base" hold time derived from DIFFICULTY_LEVEL.
 // Formula matches sunaku exactly: level 2 → (6 - 2) * 100 = 400 ms.
@@ -94,6 +96,22 @@
 // in the last N ms, the next press resolves as a tap (letter). Lets you do
 // "tap, then hold" for OS-level key auto-repeat: tap A once, hold A → "aaaa".
 #define HOMEY_REPEAT_DECAY (TAPPING_RESOLUTION + 150)
+
+// =============================================================================
+// V3 MOUSE CONFIGURATION
+// =============================================================================
+// Tuning the ZMK pointing subsystem. Defaults are conservative; these values
+// match sunaku's choices and feel reactive without being twitchy on 1440p+.
+//
+// MOUSE_MOVE_MAX — peak cursor speed (pixels per tick at full speed).
+//   Higher = cursor crosses screen faster. 600 is sunaku's default for HiDPI.
+// MOUSE_SCROLL_MAX — peak scroll speed (lines per tick).
+//   Lower than move because scroll is per-line, not per-pixel.
+// MOUSE_TIME_TO_MAX — ramp duration from 0 to peak (ms).
+//   300 ms feels real-mouse-like; <200 ms is twitchy; >500 ms feels sluggish.
+// MOUSE_ACCEL_EXP — 0 = linear ramp, 1 = quadratic (gaming-mouse feel).
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 600
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
 
 // CAGS modifier order (macOS-tuned). Pinky → index = Ctrl, Alt, Cmd, Shift.
 // Mirrored on both hands. On macOS, Cmd lands on the strong middle finger
@@ -165,13 +183,19 @@
 // =============================================================================
 // LAYER NUMBERS
 // =============================================================================
-// V1 layers preserved. V2 adds two bilateral enforcement layers underneath.
+// V1 layers preserved. V2 added two bilateral enforcement layers underneath.
+// V3 adds CURSOR + MOUSE + three Mouse speed sublayers.
 #define DEFAULT      0
 #define LOWER        1
 #define MAGIC        2
 #define FACTORY_TEST 3
 #define BILATERAL_LH 4
 #define BILATERAL_RH 5
+#define CURSOR       6
+#define MOUSE        7
+#define MOUSE_SLOW   8
+#define MOUSE_FAST   9
+#define MOUSE_WARP   10
 
 / {
     behaviors {
@@ -329,6 +353,36 @@
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
         };
+
+        // V3: wispr hold-tap for Wispr Flow dictation.
+        //   HOLD = F18 (push-to-talk), TAP = F19 (toggle)
+        //
+        // tap-preferred: only resolves to hold if held past tapping-term-ms.
+        // Safer for a frequently-tapped key — better to miss a push-to-talk
+        // than misfire it.
+        wispr: wispr_hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "WISPR_HOLD_TAP";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        // V3: Hyper hold-tap.
+        // Used on the LH upper-outer thumb (replaces redundant LSHFT).
+        // tap-preferred: a brief hold + release types LSHFT, not Hyper.
+        // Higher tapping-term than wispr because Hyper triggers OS-level
+        // keyboard automations (Raycast, Hammerspoon) where misfires are
+        // user-visible — better to require a deliberate hold.
+        hyper_mt: hyper_mt {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HYPER_MT";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <250>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
     macros {
@@ -426,6 +480,41 @@
                 , <&macro_release &kp MACRO_PLACEHOLDER>
                 ;
         };
+
+        // =====================================================================
+        // V3: selection-helper macros for the Cursor layer.
+        // =====================================================================
+
+        // select_all — Cmd+A. Wrapped as a macro (not a plain &kp) so the
+        // Cursor layer can reference it by name like sunaku does.
+        select_all: select_all {
+            label = "SELECT_ALL";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(A)>;
+        };
+
+        // select_line — jump to start of line, then shift+select to end.
+        // macOS line-start is Cmd+Left; line-end is Cmd+Right.
+        select_line: select_line {
+            label = "SELECT_LINE";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <1>;
+            tap-ms = <1>;
+            bindings = <&kp LG(LEFT)>, <&kp LG(LS(RIGHT))>;
+        };
+
+        // select_word — jump to start of word, then shift+select to end.
+        // macOS word-start is Option+Left; word-end is Option+Right.
+        select_word: select_word {
+            label = "SELECT_WORD";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <1>;
+            tap-ms = <1>;
+            bindings = <&kp LA(LEFT)>, <&kp LA(LS(RIGHT))>;
+        };
     };
 
     keymap {
@@ -451,8 +540,8 @@
             &kp EQUAL      &kp N1   &kp N2      &kp N3      &kp N4      &kp N5                                                                                              &kp N6  &kp N7  &kp N8                &kp N9                &kp N0                &kp MINUS
             &kp TAB        &kp Q    &kp W       &kp E       &kp R       &kp T                                                                                               &kp Y   &kp U   &kp I                 &kp O                 &kp P                 &kp BSLH
             &kp ESC        &hml_pinky LH_PINKY_MOD A   &hml_ringy LH_RINGY_MOD S   &hml_middy LH_MIDDY_MOD D   &hml_index LH_INDEX_MOD F   &kp G                                     &kp H   &hmr_index RH_INDEX_MOD J   &hmr_middy RH_MIDDY_MOD K   &hmr_ringy RH_RINGY_MOD L   &hmr_pinky RH_PINKY_MOD SEMI   &kp SQT
-            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &kp LSHFT   &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &kp RSHFT                             &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
-            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &kp BSPC    &kp DEL     &kp LALT   &kp RALT  &kp RET   &kp SPACE                                     &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
+            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &hyper_mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &wispr LG(F18) LG(F19)                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
+            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &kp BSPC    &kp DEL     &mo CURSOR &mo MOUSE  &kp RET   &kp SPACE                                     &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
             >;
         };
 
@@ -527,5 +616,153 @@
             &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans      &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
             >;
         };
+
+        // =====================================================================
+        // V3: CURSOR layer (text navigation). Stubbed in Task 2; filled in
+        // Tasks 6–7. While stubbed, all positions are &trans → no behavior
+        // change vs. V2.
+        // =====================================================================
+        cursor_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &kp ESC  &kp INS  &kp LS(TAB)  &kp DEL  &trans                                                                  &trans  &trans  &trans  &kp LS(TAB)  &trans  &trans
+            &trans  &kp RET  &kp SPACE  &kp TAB  &kp BSPC  &kp LG(X)                                                               &kp LG(X)  &kp LS(TAB)  &kp LG(Z)  &kp LG(LS(Z))  &kp TAB  &trans
+            &sk LSHFT  &kp LCTRL  &kp LALT  &kp LGUI  &kp LSHFT  &kp LG(C)                                                        &kp LG(C)  &kp LEFT  &kp UP  &kp DOWN  &kp RIGHT  &sk LSHFT
+            &kp LG(L)  &select_all  &select_line  &select_word  &kp LG(F)  &kp LG(V)  &trans  &trans  &trans  &trans  &trans  &trans  &kp LG(V)  &kp LG(LEFT)  &kp PG_UP  &kp PG_DN  &kp LG(RIGHT)  &kp LG(L)
+            &kp LG(K)  &kp LG(Z)  &kp LG(LS(Z))  &kp LG(LS(G))  &kp LG(G)          &trans  &trans  &trans  &trans  &trans  &trans          &kp LG(F)  &kp LG(LS(G))  &kp LG(G)  &kp LG(H)  &kp LG(K)
+            >;
+        };
+
+        // V3: MOUSE base layer — adapted from sunaku's Glorious Engrammer.
+        //
+        // Movement (inverted-T) on both hands; scroll mirrored on outer columns.
+        //   LH row 2 (W/E/R):  scroll-left, MOVE_UP, scroll-right
+        //   LH row 3 (A→G):    scroll-up,  MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT, scroll-up
+        //   LH row 4 (Z→B):    scroll-dn,  SLOW, WARP, FAST, scroll-dn
+        //   LH row 5 (X/C/V):  cut, copy, paste
+        //   LH thumb row 4:    MCLK, K_APP (context menu), MB5
+        //   LH thumb row 5:    LCLK, RCLK, MB4   ← drag = hold LCLK on T5
+        //
+        //   RH row 2 (Y→P):    scroll-left, LCLK, MCLK, RCLK, scroll-right
+        //   RH row 3 (H→;):    scroll-up,  FAST, WARP, SLOW, K_APP, MB4
+        //   RH row 4 (N→/):    scroll-dn,  MOVE_LEFT, MOVE_UP, MOVE_DOWN, MOVE_RIGHT, MB5
+        //   RH thumb row 4:    cut, copy, paste
+        //
+        // Scroll keys appear at A/G/Y/P (vertical scroll up) and Z/B/N/PGUP
+        // (down), so any single finger on either home row can reach scroll
+        // without moving away from the movement cluster.
+        mouse_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                                              &trans          &trans           &trans           &trans           &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                                              &trans  &trans          &trans           &trans           &trans           &trans
+            &trans  &trans  &msc SCRL_LEFT  &mmv MOVE_UP  &msc SCRL_RIGHT  &trans                                                              &msc SCRL_LEFT  &mkp LCLK       &mkp MCLK        &mkp RCLK        &msc SCRL_RIGHT  &trans
+            &trans  &msc SCRL_UP  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &msc SCRL_UP                                                    &msc SCRL_UP  &mo MOUSE_FAST  &mo MOUSE_WARP   &mo MOUSE_SLOW   &kp K_APP        &mkp MB4
+            &trans  &msc SCRL_DOWN  &mo MOUSE_SLOW  &mo MOUSE_WARP  &mo MOUSE_FAST  &msc SCRL_DOWN  &mkp MCLK  &kp K_APP  &mkp MB5  &kp LG(X)  &kp LG(C)  &kp LG(V)  &msc SCRL_DOWN  &mmv MOVE_LEFT  &mmv MOVE_UP     &mmv MOVE_DOWN   &mmv MOVE_RIGHT  &mkp MB5
+            &trans  &trans  &kp LG(X)  &kp LG(C)  &kp LG(V)          &mkp LCLK  &mkp RCLK  &mkp MB4  &trans  &trans  &trans                          &trans          &trans           &trans           &trans           &trans
+            >;
+        };
+
+        // V3: MOUSE_SLOW sublayer (precision). Same key positions as MOUSE,
+        // but with reduced movement scaler (set up in Task 10). Filled Task 10.
+        mouse_slow_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE_FAST sublayer (fast travel). Filled Task 10.
+        mouse_fast_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V3: MOUSE_WARP sublayer (screen-crossing). Filled Task 10.
+        mouse_warp_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+    };
+};
+
+// =============================================================================
+// V3: Mouse motion + scroll tuning.
+// =============================================================================
+// Reference overrides for the built-in &mmv (mouse move) and &msc (mouse
+// scroll) behaviors. acceleration-exponent=1 = quadratic feel like a real
+// mouse. time-to-max-speed-ms = ramp duration; 300 ms is sunaku's default.
+// delay-ms=0: no artificial delay before movement starts.
+
+&mmv {
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <1>;
+    delay-ms = <0>;
+};
+
+&msc {
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <0>;
+    delay-ms = <0>;
+};
+
+// =============================================================================
+// V3: Input-listener speed scalers for Mouse sublayers.
+// =============================================================================
+// urob's input-listener pattern: instead of duplicating the MOUSE layer three
+// times (one per speed), we use a single MOUSE layer and three zero-key sublayers
+// (MOUSE_SLOW, MOUSE_FAST, MOUSE_WARP). When a sublayer is co-active, the
+// listener intercepts every HID mouse-move event and applies the matching scaler
+// before it reaches the host.
+//
+// zip_xy_scaler <numerator> <denominator> — multiplies raw motion by num/denom.
+//   MOUSE_SLOW  = 1/4 (precision work: pixel-level drag, click on small targets)
+//   MOUSE_FAST  = 2/1 (cross-pane sweeps without leaving the home row)
+//   MOUSE_WARP  = 6/1 (full-screen jumps)
+//
+// zip_scroll_scaler does the same for scroll events. WARP is omitted from the
+// scroll listener: a 6x scroll burst is almost never useful and easy to misfire.
+//
+// The three sublayer keymaps stay all-&trans — their only role is to signal
+// the active scaler. No bindings needed.
+
+&mmv_input_listener {
+    precision {
+        layers = <MOUSE_SLOW>;
+        input-processors = <&zip_xy_scaler 1 4>;
+    };
+    warp {
+        layers = <MOUSE_WARP>;
+        input-processors = <&zip_xy_scaler 6 1>;
+    };
+    fast {
+        layers = <MOUSE_FAST>;
+        input-processors = <&zip_xy_scaler 2 1>;
+    };
+};
+
+&msc_input_listener {
+    precision {
+        layers = <MOUSE_SLOW>;
+        input-processors = <&zip_scroll_scaler 1 4>;
+    };
+    fast {
+        layers = <MOUSE_FAST>;
+        input-processors = <&zip_scroll_scaler 2 1>;
     };
 };

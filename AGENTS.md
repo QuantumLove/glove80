@@ -1,88 +1,99 @@
 # AGENTS.md
 
+Conventions for AI agents working in this repo. Humans, see [README.md](README.md).
+
 ## What this repo is
 
-QuantumLove/glove80: Glove80 ZMK keyboard firmware. V1 is the stock baseline, preserved as-is. All agents work in pedagogical mode.
+QuantumLove/glove80: Glove80 ZMK keyboard firmware. V1 is the stock baseline, preserved at commit `a61129d`. All agents work in pedagogical mode.
 
-## Pedagogical Mode
+## Pedagogical mode
 
-- Explain every change in plain language before or alongside the code.
+- Explain every change in plain language alongside the code.
 - Define every firmware term the first time it appears.
 - Explain WHY each change is made, not just WHAT.
 - Never assume context the user hasn't been given.
 
 ## Build
 
-Run `./build.sh` from the repo root. Uses `zmkfirmware/zmk-dev-arm:3.5`; no local ARM toolchain needed. `config/glove80.conf` is an empty Kconfig placeholder included in the build.
+```bash
+./build.sh
+```
 
-Outputs: `glove80_lh.uf2` (left half), `glove80_rh.uf2` (right half).
+Uses `zmkfirmware/zmk-dev-arm:3.5`. Outputs `glove80_lh.uf2` and `glove80_rh.uf2` in the repo root.
+
+## After every keymap change: regenerate the visual diagram
+
+```bash
+./bin/draw-keymap.sh
+```
+
+This rewrites `docs/keymap.yaml` and `docs/keymap.svg` from `config/glove80.keymap`. **Commit both alongside any keymap edit.** The SVG is the canonical human-readable reference — keeping it current means every reviewer can see what each key does without reading devicetree.
+
+Requires `uv` on the host. `keymap-drawer` is fetched on demand via `uvx`; no global install.
 
 ## Test
 
-**Agent-side checks** (run after every build):
-- Both `glove80_lh.uf2` and `glove80_rh.uf2` exist in the repo root.
-- Each file starts with the UF2 magic bytes (`0x0A324655` at offset 0).
-- Each file is between 200 KB and 600 KB.
+**Agent-side, after every build:**
+- Both `glove80_lh.uf2` and `glove80_rh.uf2` exist
+- Each starts with UF2 magic bytes (`0x0A324655` at offset 0 — `xxd -l 4` shows `5546 320a`)
+- Each is between 200 KB and 600 KB
 
-**Human-side checks:** Flash both halves (see Flash section). Open https://www.keyboardchecker.com and press every key.
+**Human-side:** flash both halves, then `keyboardchecker.com` against the layers in `docs/keymap.svg`.
 
 ## Flash
 
-1. Enter bootloader mode (power-up method): switch off, hold `Magic + E` (LEFT) or `I + PgDn` (RIGHT), then switch on while holding. Drive mounts as `GLV80LHBOOT` or `GLV80RHBOOT`. Slow-pulsing red LED confirms bootloader + USB connected.
-2. Drag the correct UF2 file onto the drive. Wait for the keyboard to reboot automatically.
-3. Left half gets `glove80_lh.uf2`. Right half gets `glove80_rh.uf2`. Do not mix the files.
-4. Flash RIGHT half first, then LEFT (moergo's recommended order).
+Power off, hold bootloader combo while flipping power on, drag UF2.
 
-Full procedure and ZMK method: `README §Flash` and https://docs.moergo.com/glove80-user-guide/customizing-key-layout/#putting-glove80-into-bootloader-for-firmware-loading
+- Left: `Magic + E` → `GLV80LHBOOT` → `glove80_lh.uf2`
+- Right: `I + PgDn` → `GLV80RHBOOT` → `glove80_rh.uf2`
+
+Slow-pulsing red LED = bootloader + USB connected. Drive unmounts on success. Right half first, then left.
+
+Full procedure: https://docs.moergo.com/glove80-user-guide/customizing-key-layout/
+
+## Scope boundaries
+
+**V1:** stock baseline, Docker build, human-tier verification. Preserved at `a61129d`.
+
+**V2:** V1 + sunaku-flavored home-row mods on A/S/D/F and J/K/L/; in CAGS order. `DIFFICULTY_LEVEL` currently 3 (300 ms hold + 300 ms streak decay). Shift forgiveness and bilateral enforcement on. Two bilateral-enforcement layers.
+
+**V3 (current):**
+- CURSOR layer on LH lower-inner thumb (text nav)
+- MOUSE layer on RH lower-inner thumb with three speed sublayers (MOUSE_SLOW/FAST/WARP)
+- Hyper on LH upper-outer thumb (`&hyper_mt HYPER LSHFT`)
+- Wispr Flow on RH upper-outer thumb (`&wispr LG(F18) LG(F19)`)
+- `CONFIG_ZMK_POINTING=y`, motion tuned via `&mmv`/`&msc` overrides, sublayer speed scaling via `&mmv_input_listener` + `zip_xy_scaler`
+- Visual keymap diagrams via `bin/draw-keymap.sh`
+
+**Out of scope** (tracked in [ROADMAP.md](ROADMAP.md)): Symbols/Numpad layer (V4), app-switching combos (V5), OS integrations (V6+), GitHub Actions CI.
+
+## Working conventions
+
+- Commit subjects in imperative mood ("Add X", not "Added X")
+- Commit bodies explain WHY, not just what
+- No emojis anywhere
+- Define firmware terms on first use in any agent-authored text
+- Write for a user who is learning
+
+## Out-of-scope policy
+
+If a task requires anything outside the current scope, **HALT**. Surface the finding to the user with the header `## OUT-OF-SCOPE ENCOUNTERED` followed by clear options. Wait for explicit choice. Silence is not approval.
 
 ## Glossary
 
-- **ZMK**: open-source keyboard firmware framework built on Zephyr RTOS (https://zmk.dev).
-- **west**: Zephyr's meta-tool and dependency manager; `config/west.yml` pins the ZMK source version.
-- **UF2**: firmware-bundle format that mass-storage bootloaders accept via drag-and-drop; no special flashing tool required.
-- **shield**: hardware module definition in Zephyr; the Glove80 shield encodes its pin layout and split configuration.
-- **devicetree**: Zephyr's config-as-code syntax for hardware and bindings; `.keymap` files are devicetree source files.
-- **default_layer**: the layer active when no other layer is held; the base typing layer the keyboard starts on.
-- **magic key**: Moergo's special key that activates the Magic layer (RGB control, Bluetooth profile switching, factory reset).
-- **mass-storage bootloader**: recovery mode where the keyboard presents as a USB drive for drag-and-drop firmware installation.
-- **HRM** (Home Row Mod): a key on the home row that types its letter when tapped and acts as a modifier (Shift/Ctrl/Alt/Cmd) when held. V2 adds HRMs on A/S/D/F and J/K/L/;.
-- **hold-tap behavior**: ZMK primitive — one key, two outputs, chosen by whether it was tapped or held. Used by V1's `layer_td` and `magic` keys; V2 adds eight more for the home row.
-- **mod-tap (`&mt`)**: ZMK's stock hold-tap whose hold side is a modifier. V2 doesn't use `&mt` directly because HRM needs finer tuning (per-finger timing, positional triggers, idle decay).
-- **positional hold-tap**: a hold-tap that also checks which other key was pressed during the hold window. If the other key is on the same hand, the HRM resolves to a tap (letter); if on the opposite hand, to a hold (modifier). Implemented via the `hold-trigger-key-positions` property and is the primary defense against accidental modifier activation during fast typing.
-- **bilateral combinations**: the touch-typing convention that modifier-key chords use one hand to hold the modifier and the other to tap the modified key. V2 enforces this in firmware via positional hold-taps plus the two bilateral enforcement layers.
-- **bilateral enforcement layer**: a layer that overrides the same-hand home-row keys to plain `&kp` whenever an HRM on that hand is held. Prevents same-hand modifier chords from accidentally firing.
-- **conditional layer**: a ZMK construct that auto-activates one layer when one or more others are already active. Not used in V2; reserved vocabulary for V3+.
-- **`tapping-term-ms`**: how long a hold-tap key must be held before its hold side can fire. The "sensitivity" knob — lower = more sensitive (more misfires); higher = slower hold response.
-- **`quick-tap-ms`** ("repeat decay"): if the same hold-tap key was tapped within the last N ms, the next press is forced to be a tap. Lets you do "tap-then-hold" for OS-level key auto-repeat.
-- **`require-prior-idle-ms`** ("streak decay"): the hold side cannot fire if any key was pressed in the last N ms. The major anti-misfire knob for fast typists.
-- **`hold-while-undecided`**: ZMK property that pre-presses the hold side during the undecided window so releasing the key without pressing another still emits the tap letter. Powers SHIFT_FORGIVENESS.
-- **CAGS** / **GACS**: home-row modifier orderings. GACS = Gui/Alt/Ctrl/Shift from pinky to index (Linux/Windows default). CAGS = Ctrl/Alt/Cmd/Shift (macOS — swaps Gui and Ctrl so Cmd sits on the strong middle finger).
-- **DIFFICULTY_LEVEL**: sunaku's preset for HRM sensitivity (1=500ms novice → 5=100ms expert). One `#define` retunes every per-finger timing. V2 ships at level 2 (400ms).
-
-## Scope Boundaries
-
-**In V1:** stock baseline keymap, local Docker build via `./build.sh`, human-tier verification (flash + keyboard checker). V1 is preserved in git at commit `a61129d`.
-
-**In V2 (current):** V1 plus sunaku-flavored home-row mods on A/S/D/F + J/K/L/; with CAGS modifier order (macOS-tuned), `DIFFICULTY_LEVEL` 2 (400 ms hold), `SHIFT_FORGIVENESS` and `ENFORCE_BILATERAL` enabled. Two bilateral-enforcement layers added (`BILATERAL_LH`, `BILATERAL_RH`).
-
-**Out of current scope** (tracked in `ROADMAP.md`): nav layer (V3), symbol/numpad layer (V4), Hyper layer (V5), OS integrations (V6+), GitHub Actions CI, Nix flake build.
-
-## Working Conventions
-
-- Commit subject lines use the imperative mood ("Add glossary", not "Added glossary").
-- Every commit or PR body explains WHY the change was made, not just what changed.
-- No emojis in headings, commit messages, or file content unless the user explicitly requests them.
-- Define every firmware term the first time it appears in any agent-authored text.
-- Write for a user who is learning.
-
-## Out-of-Scope Policy
-
-Anything not in the active plan or tracked source files must be flagged and human-gated before any action is taken.
-
-1. **HALT** the current task immediately. Do not proceed, even partially.
-2. **DOCUMENT** the finding to `.omo/evidence/out-of-scope-task-{N}-{slug}.md`. Record what was found, why it's out of scope, and what it would block.
-3. **SURFACE** the finding to the user with the header `## OUT-OF-SCOPE ENCOUNTERED at Task {N}`, followed by three options:
-   - **A**: Add to `ROADMAP.md` as a future V2+ iteration (no V1 impact).
-   - **B**: Expand V1 scope (requires plan amendment and phase-gate rerun).
-   - **C**: A different approach proposed by the user.
-4. **WAIT** for an explicit choice. Silence is not approval. Do not resume until the user responds.
+- **ZMK** — open-source keyboard firmware (https://zmk.dev)
+- **west** — Zephyr's dependency manager; `config/west.yml` pins ZMK source
+- **UF2** — drag-and-drop firmware format for mass-storage bootloaders
+- **shield** — Zephyr hardware module; the Glove80 shield encodes pin layout + split config
+- **devicetree** — Zephyr's config-as-code syntax; `.keymap` files are devicetree source
+- **HRM** (Home Row Mod) — letter on tap, modifier on hold
+- **hold-tap behavior** — one key, two outputs, chosen by tap vs hold (`&mt`, `&lt`, our `hml_*`/`hmr_*`)
+- **positional hold-tap** — hold-tap that also checks which other key was pressed during the hold window; same-hand → tap, opposite-hand → hold. Primary anti-misfire mechanism
+- **bilateral enforcement layer** — overrides same-hand HRM positions to plain `&kp` while an HRM on that hand is held
+- **`tapping-term-ms`** — hold-time threshold (lower = more sensitive)
+- **`require-prior-idle-ms`** — streak decay; blocks HRM hold if any key was pressed in the last N ms
+- **`hold-while-undecided`** — pre-press the hold side so a no-follow-up release still emits the tap letter (powers shift forgiveness)
+- **CAGS** — Ctrl/Alt/Cmd/Shift pinky-to-index, macOS-tuned (Cmd lands on the strong middle)
+- **DIFFICULTY_LEVEL** — sunaku's HRM sensitivity preset (1=500 ms novice → 5=100 ms expert). Currently 3
+- **mouse subsystem** — ZMK's pointer emulation (`&mkp`, `&mmv`, `&msc`); enabled via `CONFIG_ZMK_POINTING=y`
+- **input listener / `zip_xy_scaler`** — ZMK input-processor pipeline that scales mouse-move values based on which layer is co-active. Drives MOUSE_SLOW/FAST/WARP
