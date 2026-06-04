@@ -44,6 +44,7 @@
 #include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/pointing.h>
 
 #define HYPER LC(LS(LG(LALT)))
 
@@ -616,15 +617,25 @@
             >;
         };
 
-        // V3: MOUSE base layer (pointer + buttons + scroll). Stub; filled Task 9.
+        // V3: MOUSE base layer (pointer + buttons + scroll). Filled Task 9.
+        //
+        // Left hand — movement cluster (inverted-T):
+        //   row 3: scroll-left, MOVE_UP, scroll-right
+        //   row 4: MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT
+        //   row 5: scroll-up, scroll-down
+        // Right hand — buttons + speed sublayers + mirror movement:
+        //   row 3: LCLK, MCLK, RCLK
+        //   row 4: speed sublayers (FAST / WARP / SLOW), MB4 on outer
+        //   row 5: mirror movement L/U/D/R, MB5 on outer
+        // Thumb: left T5 = &mkp LCLK (drag handle)
         mouse_layer {
             bindings = <
-            &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans              &trans            &trans                                                                                                                              &trans  &trans               &trans               &trans                &trans
+            &trans  &trans  &trans              &trans            &trans              &trans                                                                                                  &trans  &trans  &trans               &trans                &trans                &trans
+            &trans  &trans  &msc SCRL_LEFT      &mmv MOVE_UP      &msc SCRL_RIGHT     &trans                                                                                                  &trans  &mkp LCLK            &mkp MCLK            &mkp RCLK             &trans                &trans
+            &trans  &trans  &mmv MOVE_LEFT      &mmv MOVE_DOWN    &mmv MOVE_RIGHT     &trans                                                                                                  &trans  &mo MOUSE_FAST       &mo MOUSE_WARP       &mo MOUSE_SLOW        &trans                &mkp MB4
+            &trans  &trans  &msc SCRL_UP        &msc SCRL_DOWN    &trans              &trans      &trans     &trans     &mkp LCLK  &trans  &trans  &trans                                    &trans  &mmv MOVE_LEFT       &mmv MOVE_UP         &mmv MOVE_DOWN        &mmv MOVE_RIGHT       &mkp MB5
+            &trans  &trans  &trans              &trans            &trans                          &mkp LCLK  &mkp RCLK  &mkp MB4   &trans  &trans  &trans                                            &trans               &trans               &trans                &trans                &trans
             >;
         };
 
