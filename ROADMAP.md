@@ -1,28 +1,19 @@
 # ROADMAP
 
-Tracks what works today (V3) and what is planned next, in order. No commitments to dates.
+What's shipped and what's next. Priority queue, not a promise.
 
-## Current Features (V3 — V2 baseline + Cursor and Mouse layers)
+## Shipped
 
-All V2 features still work. V3 adds Cursor and Mouse top-level layers, three Mouse speed sublayers, a Hyper key, and a Wispr Flow hotkey.
+- **V1** — stock factory keymap, local Docker build. Preserved at `a61129d`.
+- **V2** — sunaku-flavored home-row mods on A/S/D/F + J/K/L/; (CAGS, macOS-tuned). `DIFFICULTY_LEVEL` 3, shift forgiveness, bilateral enforcement.
+- **V3 (current)** — Cursor layer (text nav), Mouse layer with three speed sublayers (Slow/Fast/Warp), Hyper key, Wispr Flow hotkey. Visual keymap diagram via `keymap-drawer`.
 
-**V2 baseline preserved (V1 lives at commit `a61129d`).**
+## Next
 
-**V3 additions:**
-- Cursor layer (hold LH lower-inner thumb): arrows, page nav, find, undo/redo, copy/cut/paste, select_word/line/all, sticky shift
-- Mouse layer (hold RH lower-inner thumb): inverted-T movement, three buttons + MB4/MB5, scroll, drag (LCLK on left thumb T5)
-- Mouse speed sublayers (held with RH index/middle/ring on Mouse layer): SLOW (1/4x), FAST (2x), WARP (6x)
-- Hyper key on LH upper-outer thumb: `&mt HYPER LSHFT` (hold=Hyper, tap=Shift)
-- Wispr Flow hotkey on RH upper-outer thumb: Cmd+F18 hold / Cmd+F19 tap
-- `CONFIG_ZMK_POINTING=y` for the mouse subsystem
-
-## Planned (V4+)
-
-1. **V4: Symbols/Numpad Layer** — Left-hand numpad (7/8/9 top, 4/5/6 home, 1/2/3 bottom). Right-hand: brackets, operators. Activated via a thumb key TBD.
-2. **V5: Combos for app switching** — sunaku's app/window/tab cycling via LH thumb-pair combos (T1+T4 = Cmd+Tab cycle, T3+T6 = Opt+Tab, T2+T5 = Ctrl+Tab), using the `mod_tab_chord` swapper pattern.
-3. **V6: macOS + OS Integration** — Raycast hotkeys, Hammerspoon glue, AeroSpace tiling. SEPARATE plans from firmware; the keyboard sends keystrokes, OS tools consume them.
+1. **V4 — Symbols / Numpad** — left-hand numpad, right-hand brackets/operators. Thumb activator TBD.
+2. **V5 — App-switching combos** — sunaku's LH-thumb-pair combos for Cmd+Tab / Opt+Tab / Ctrl+Tab via `mod_tab_chord` swapper.
+3. **V6 — macOS integration** — Raycast, Hammerspoon, AeroSpace. Separate from firmware: the keyboard emits keystrokes, OS tools consume them.
 
 ## How we add features
 
-Each feature gets its own iteration. We change one thing at a time, test that it works exactly as intended, then commit and move on. Every commit is small enough to understand and revert. The ROADMAP is not a promise — it is a priority queue. Items move up or down based on what proves most useful in practice.
-
+One iteration per feature. Change one thing at a time, verify, commit. Every commit small enough to revert.
