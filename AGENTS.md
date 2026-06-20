@@ -62,6 +62,7 @@ Full procedure: https://docs.moergo.com/glove80-user-guide/customizing-key-layou
 - MOUSE layer via layer-tap on the RH Enter thumb — tap Enter, hold Mouse — with three speed sublayers (MOUSE_SLOW/FAST/WARP)
 - NUMBER layer via layer-tap on the LH Delete thumb — tap Delete, hold Number — right-hand numpad + operators, left-hand mods/editing (Miryoku-style)
 - SYMBOL layer via dedicated `lt_space` on the RH Space thumb — tap Space, hold Symbol — left-hand symbol pad, right-hand mods/whitespace (Miryoku-style)
+- App-switching combos (sunaku `mod_tab_chord` swapper, default layer only): left-thumb pinches — Hyper+Backspace = Cmd+Tab, Ctrl+Delete = Ctrl+Tab — hold the modifier + Cursor layer, tap Tab/Shift+Tab to cycle, release to commit
 - Hyper on LH upper-outer thumb (`&hyper_mt HYPER LSHFT`)
 - Wispr Flow on RH upper-outer thumb (`&wispr LG(F18) LG(F19)`)
 - `CONFIG_ZMK_POINTING=y`, motion tuned via `&mmv`/`&msc` overrides, sublayer speed scaling via `&mmv_input_listener` + `zip_xy_scaler`

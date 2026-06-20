@@ -4,7 +4,7 @@ Personal Glove80 firmware. Goal: keyboard-only macOS workflow, built one iterati
 
 ## Status
 
-**V4 (current).** All V1 stock features preserved.
+**V5 (current).** All V1 stock features preserved.
 
 - **V1** baseline — Moergo's factory keymap, locally buildable via Docker. Lives at commit `a61129d`.
 - **V2** — sunaku-flavored home-row mods on A/S/D/F and J/K/L/; (CAGS, macOS-tuned).
@@ -17,6 +17,8 @@ Personal Glove80 firmware. Goal: keyboard-only macOS workflow, built one iterati
   - **Number layer** — tap Delete / hold the LH Delete thumb. Right-hand numpad (7-8-9/4-5-6/1-2-3/0) + math operators; left hand keeps modifiers, select/find/undo, whitespace.
   - **Symbol layer** — tap Space / hold the RH Space thumb. Left-hand symbol pad (common symbols on the home row); right hand keeps modifiers + whitespace.
   - Faster home row (`DIFFICULTY_LEVEL` 3 → 4), thumb cluster remapped (layer access moved onto the Backspace/Delete/Enter/Space thumbs; factory Alt restored on the inner-bottom thumbs), and the dead bilateral-enforcement layers removed (positional hold-tap already does that job).
+- **V5** adds:
+  - **App-switching combos** — pinch the top-left thumb pair (Hyper+Backspace) for Cmd+Tab, the middle pair (Ctrl+Delete) for Ctrl+Tab. Hold the pinch and tap Tab/Shift+Tab on the Cursor layer to cycle; release to commit. Stock-ZMK swapper (`mod_tab_chord`), default layer only.
 
 See [ROADMAP.md](ROADMAP.md) for what's next.
 

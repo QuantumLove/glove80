@@ -813,3 +813,10 @@ layers:
   - LALT
   - LCTL
   - ''
+combos:
+- p: [52, 69]
+  k: '&mod_tab_chord LGUI 4'
+  l: [default]
+- p: [53, 70]
+  k: '&mod_tab_chord LCTL 4'
+  l: [default]
