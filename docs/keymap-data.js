@@ -1,6 +1,6 @@
-// AUTO-GENERATED from docs/keymap.yaml (keymap-drawer output).
-// Geometry seeded from keymap.yaml positions; regenerate with gen_keymap_data.py.
-// Do not edit by hand.
+// Seeded once from docs/keymap.yaml (keymap-drawer), then hand-maintained.
+// Shifted keys are shown as the symbol they produce (e.g. Shift+4 -> $).
+// Keep in sync with config/glove80.keymap; see AGENTS.md.
 const KEYMAP = {
   "layerOrder": [
     "default",
@@ -1371,7 +1371,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+TAB",
+        "tap": "⇧Tab",
         "hold": null
       },
       {
@@ -1395,7 +1395,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+TAB",
+        "tap": "⇧Tab",
         "hold": null
       },
       {
@@ -1435,7 +1435,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+TAB",
+        "tap": "⇧Tab",
         "hold": null
       },
       {
@@ -2981,7 +2981,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+TAB",
+        "tap": "⇧Tab",
         "hold": null
       },
       {
@@ -2993,27 +2993,27 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+\\",
+        "tap": "|",
         "hold": null
       },
       {
-        "tap": "Sft+3",
+        "tap": "#",
         "hold": null
       },
       {
-        "tap": "Sft+4",
+        "tap": "$",
         "hold": null
       },
       {
-        "tap": "Sft+6",
+        "tap": "^",
         "hold": null
       },
       {
-        "tap": "Sft+`",
+        "tap": "~",
         "hold": null
       },
       {
-        "tap": "Sft+1",
+        "tap": "!",
         "hold": null
       },
       {
@@ -3041,7 +3041,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+G",
+        "tap": "⇧G",
         "hold": null
       },
       {
@@ -3057,11 +3057,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+;",
+        "tap": ":",
         "hold": null
       },
       {
-        "tap": "Sft+5",
+        "tap": "%",
         "hold": null
       },
       {
@@ -3109,7 +3109,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+=",
+        "tap": "+",
         "hold": null
       },
       {
@@ -3149,7 +3149,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+,",
+        "tap": "<",
         "hold": null
       },
       {
@@ -3181,11 +3181,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+8",
+        "tap": "*",
         "hold": null
       },
       {
-        "tap": "Sft+-",
+        "tap": "_",
         "hold": null
       },
       {
@@ -3217,7 +3217,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+.",
+        "tap": ">",
         "hold": null
       },
       {
@@ -3229,7 +3229,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+9",
+        "tap": "(",
         "hold": null
       },
       {
@@ -3241,11 +3241,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+0",
+        "tap": ")",
         "hold": null
       },
       {
-        "tap": "Sft+2",
+        "tap": "@",
         "hold": null
       }
     ],
@@ -3299,11 +3299,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+9",
+        "tap": "(",
         "hold": null
       },
       {
-        "tap": "Sft+0",
+        "tap": ")",
         "hold": null
       },
       {
@@ -3339,7 +3339,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+1",
+        "tap": "!",
         "hold": null
       },
       {
@@ -3347,11 +3347,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+[",
+        "tap": "{",
         "hold": null
       },
       {
-        "tap": "Sft+]",
+        "tap": "}",
         "hold": null
       },
       {
@@ -3359,7 +3359,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+/",
+        "tap": "?",
         "hold": null
       },
       {
@@ -3371,7 +3371,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+TAB",
+        "tap": "⇧Tab",
         "hold": null
       },
       {
@@ -3387,11 +3387,11 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+3",
+        "tap": "#",
         "hold": null
       },
       {
-        "tap": "Sft+6",
+        "tap": "^",
         "hold": null
       },
       {
@@ -3399,15 +3399,15 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+-",
+        "tap": "_",
         "hold": null
       },
       {
-        "tap": "Sft+4",
+        "tap": "$",
         "hold": null
       },
       {
-        "tap": "Sft+8",
+        "tap": "*",
         "hold": null
       },
       {
@@ -3435,15 +3435,15 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+`",
+        "tap": "~",
         "hold": null
       },
       {
-        "tap": "Sft+,",
+        "tap": "<",
         "hold": null
       },
       {
-        "tap": "Sft+\\",
+        "tap": "|",
         "hold": null
       },
       {
@@ -3451,7 +3451,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+.",
+        "tap": ">",
         "hold": null
       },
       {
@@ -3467,7 +3467,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+8",
+        "tap": "*",
         "hold": null
       },
       {
@@ -3487,7 +3487,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+'",
+        "tap": "\"",
         "hold": null
       },
       {
@@ -3511,7 +3511,7 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+7",
+        "tap": "&",
         "hold": null
       },
       {
@@ -3519,23 +3519,23 @@ const KEYMAP = {
         "hold": null
       },
       {
-        "tap": "Sft+'",
+        "tap": "\"",
         "hold": null
       },
       {
-        "tap": "Sft+=",
+        "tap": "+",
         "hold": null
       },
       {
-        "tap": "Sft+5",
+        "tap": "%",
         "hold": null
       },
       {
-        "tap": "Sft+;",
+        "tap": ":",
         "hold": null
       },
       {
-        "tap": "Sft+2",
+        "tap": "@",
         "hold": null
       },
       {
@@ -3591,27 +3591,27 @@ const KEYMAP = {
   "geometry": [
     {
       "pos": 0,
-      "x": 0.0,
+      "x": 0,
       "y": 0.55
     },
     {
       "pos": 1,
-      "x": 1.0,
+      "x": 1,
       "y": 0.55
     },
     {
       "pos": 2,
-      "x": 2.0,
+      "x": 2,
       "y": 0.28
     },
     {
       "pos": 3,
-      "x": 3.0,
+      "x": 3,
       "y": 0.18
     },
     {
       "pos": 4,
-      "x": 4.0,
+      "x": 4,
       "y": 0.42
     },
     {
@@ -3641,32 +3641,32 @@ const KEYMAP = {
     },
     {
       "pos": 10,
-      "x": 0.0,
+      "x": 0,
       "y": 1.55
     },
     {
       "pos": 11,
-      "x": 1.0,
+      "x": 1,
       "y": 1.55
     },
     {
       "pos": 12,
-      "x": 2.0,
+      "x": 2,
       "y": 1.28
     },
     {
       "pos": 13,
-      "x": 3.0,
+      "x": 3,
       "y": 1.18
     },
     {
       "pos": 14,
-      "x": 4.0,
+      "x": 4,
       "y": 1.42
     },
     {
       "pos": 15,
-      "x": 5.0,
+      "x": 5,
       "y": 1.5
     },
     {
@@ -3701,32 +3701,32 @@ const KEYMAP = {
     },
     {
       "pos": 22,
-      "x": 0.0,
+      "x": 0,
       "y": 2.55
     },
     {
       "pos": 23,
-      "x": 1.0,
+      "x": 1,
       "y": 2.55
     },
     {
       "pos": 24,
-      "x": 2.0,
+      "x": 2,
       "y": 2.28
     },
     {
       "pos": 25,
-      "x": 3.0,
+      "x": 3,
       "y": 2.18
     },
     {
       "pos": 26,
-      "x": 4.0,
+      "x": 4,
       "y": 2.42
     },
     {
       "pos": 27,
-      "x": 5.0,
+      "x": 5,
       "y": 2.5
     },
     {
@@ -3761,32 +3761,32 @@ const KEYMAP = {
     },
     {
       "pos": 34,
-      "x": 0.0,
+      "x": 0,
       "y": 3.55
     },
     {
       "pos": 35,
-      "x": 1.0,
+      "x": 1,
       "y": 3.55
     },
     {
       "pos": 36,
-      "x": 2.0,
+      "x": 2,
       "y": 3.28
     },
     {
       "pos": 37,
-      "x": 3.0,
+      "x": 3,
       "y": 3.18
     },
     {
       "pos": 38,
-      "x": 4.0,
+      "x": 4,
       "y": 3.42
     },
     {
       "pos": 39,
-      "x": 5.0,
+      "x": 5,
       "y": 3.5
     },
     {
@@ -3821,32 +3821,32 @@ const KEYMAP = {
     },
     {
       "pos": 46,
-      "x": 0.0,
+      "x": 0,
       "y": 4.55
     },
     {
       "pos": 47,
-      "x": 1.0,
+      "x": 1,
       "y": 4.55
     },
     {
       "pos": 48,
-      "x": 2.0,
+      "x": 2,
       "y": 4.28
     },
     {
       "pos": 49,
-      "x": 3.0,
+      "x": 3,
       "y": 4.18
     },
     {
       "pos": 50,
-      "x": 4.0,
+      "x": 4,
       "y": 4.42
     },
     {
       "pos": 51,
-      "x": 5.0,
+      "x": 5,
       "y": 4.5
     },
     {
@@ -3871,7 +3871,7 @@ const KEYMAP = {
     },
     {
       "pos": 56,
-      "x": 7.0,
+      "x": 7,
       "y": 7.2
     },
     {
@@ -3911,27 +3911,27 @@ const KEYMAP = {
     },
     {
       "pos": 64,
-      "x": 0.0,
+      "x": 0,
       "y": 5.55
     },
     {
       "pos": 65,
-      "x": 1.0,
+      "x": 1,
       "y": 5.55
     },
     {
       "pos": 66,
-      "x": 2.0,
+      "x": 2,
       "y": 5.28
     },
     {
       "pos": 67,
-      "x": 3.0,
+      "x": 3,
       "y": 5.18
     },
     {
       "pos": 68,
-      "x": 4.0,
+      "x": 4,
       "y": 5.42
     },
     {

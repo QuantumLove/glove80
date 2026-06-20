@@ -68,7 +68,7 @@
 
     if (tap === "(held)") return "held";
     if (isEmptyTap(tap) && !hold) return "trans";
-    if (tap.startsWith("&")) return "macro";
+    if (tap.startsWith("&") && tap.length > 1) return "macro"; // not the bare "&" symbol
 
     // hold is a layer name -> layer access
     if (hold && LAYER_SET.has(hold)) return "layer";
