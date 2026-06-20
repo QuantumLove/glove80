@@ -1,7 +1,7 @@
 // V2 — Home Row Mods (HRM), sunaku-flavored, layered onto V1 stock baseline.
 // V1 (verbatim moergo-sc/glove80-zmk-config@34888be8) is preserved in git history
 // at commit a61129d. This file diverges from V1 only on the default_layer's home
-// row (row 4) and adds two new bilateral-enforcement layers underneath.
+// row (row 4), where A/S/D/F and J/K/L/; become home row mods.
 //
 // HRM terminology (defined here on first use):
 //   - HRM (Home Row Mod): a key on the home row (A S D F or J K L ;) that
@@ -17,7 +17,8 @@
 //     the primary defense against accidental modifier activation during typing.
 //   - bilateral combinations: the convention that modifier-key chords use one
 //     hand to hold the modifier and the OTHER hand to tap the modified key.
-//     "Bilateral enforcement" makes the firmware enforce this discipline.
+//     The positional hold-tap (above) nudges you toward this: a same-hand
+//     key pressed mid-hold makes the HRM resolve to a tap, not a modifier.
 //   - hold-while-undecided: a ZMK property that pre-presses the hold side
 //     during the "undecided" window so that releasing the key without pressing
 //     anything else still types the tap letter. Powers SHIFT_FORGIVENESS.
@@ -61,26 +62,26 @@
 
 // DIFFICULTY_LEVEL — sunaku's noob-friendly sensitivity preset.
 //   1 = 500 ms (very slow, very safe)
-//   2 = 400 ms (slower, safe)         <-- V2 ships at level 2
+//   2 = 400 ms (slower, safe)
 //   3 = 300 ms (normal)
-//   4 = 200 ms (faster)
+//   4 = 200 ms (faster)               <-- current
 //   5 = 100 ms (expert, lots of misfires until your hands learn)
 // Bump it up as your fingers get used to HRM. Lower the number, longer the
 // hold needed before a key counts as a modifier.
-#define DIFFICULTY_LEVEL 3
+#define DIFFICULTY_LEVEL 4
 
 // TAPPING_RESOLUTION — the "base" hold time derived from DIFFICULTY_LEVEL.
-// Formula matches sunaku exactly: level 2 → (6 - 2) * 100 = 400 ms.
+// Formula matches sunaku exactly: level 4 → (6 - 4) * 100 = 200 ms.
 // Per-finger holding times are offsets ON TOP of this number, see below.
 #define TAPPING_RESOLUTION ((6 - DIFFICULTY_LEVEL) * 100)
 
 // Per-finger holding times. Weaker fingers (pinky) get more time so a
 // natural slower press doesn't accidentally fire the modifier. Sunaku's
-// offsets: index +30, middle +60, ring +90, pinky +120. With level 2:
-//   index  =  430 ms (shift — fastest, because shift is most natural to hold)
-//   middle =  460 ms (cmd on macOS)
-//   ring   =  490 ms (alt)
-//   pinky  =  520 ms (ctrl — slowest, because pinky is the weakest finger)
+// offsets: index +30, middle +60, ring +90, pinky +120. With level 4:
+//   index  =  230 ms (shift — fastest, because shift is most natural to hold)
+//   middle =  260 ms (cmd on macOS)
+//   ring   =  290 ms (alt)
+//   pinky  =  320 ms (ctrl — slowest, because pinky is the weakest finger)
 #define INDEX_HOLDING_TIME (TAPPING_RESOLUTION + 30)
 #define MIDDY_HOLDING_TIME (TAPPING_RESOLUTION + 60)
 #define RINGY_HOLDING_TIME (TAPPING_RESOLUTION + 90)
@@ -88,7 +89,7 @@
 
 // HOMEY_STREAK_DECAY — the "require-prior-idle-ms" value. If you typed any key
 // in the last N ms, the HRM is FORCED to resolve as a tap. This is the big
-// anti-misfire knob for typing. Level 2 → 400 ms of idle required before an
+// anti-misfire knob for typing. Level 4 → 200 ms of idle required before an
 // HRM can resolve as a modifier. Sounds long, but it only kicks in mid-word.
 #define HOMEY_STREAK_DECAY TAPPING_RESOLUTION
 
@@ -96,6 +97,23 @@
 // in the last N ms, the next press resolves as a tap (letter). Lets you do
 // "tap, then hold" for OS-level key auto-repeat: tap A once, hold A → "aaaa".
 #define HOMEY_REPEAT_DECAY (TAPPING_RESOLUTION + 150)
+
+// THUMB_HOLDING_TIME / THUMB_REPEAT_DECAY — timing for the thumb layer-tap keys
+// (Backspace→Cursor, Enter→Mouse). Matches sunaku: thumbs get a little MORE
+// hold time than the home row (+50 on the base) because a thumb resting on its
+// key shouldn't trip the layer. quick-tap lets a fast double-press auto-repeat
+// the tapped key. Both scale with DIFFICULTY_LEVEL like the home row timings.
+#define THUMB_HOLDING_TIME (TAPPING_RESOLUTION + 50)
+#define THUMB_REPEAT_DECAY (TAPPING_RESOLUTION + 150)
+
+// SPACE_* — the Symbol layer lives on the Space thumb (tap Space, hold Symbol).
+// Space is the most-pressed key, so it gets its own behavior: same balanced
+// flavor and hold time as the thumbs, but a SHORTER quick-tap window
+// (TAPPING_RESOLUTION) so tap-then-type isn't swallowed as auto-repeat. Matches
+// sunaku's defaults. (He also offers an opt-in "space forgiveness" mode —
+// tap-preferred + retro-tap — for fewer misfires; left off here to match him.)
+#define SPACE_HOLDING_TIME THUMB_HOLDING_TIME
+#define SPACE_REPEAT_DECAY TAPPING_RESOLUTION
 
 // =============================================================================
 // V3 MOUSE CONFIGURATION
@@ -133,13 +151,13 @@
 // HRMs. Available in our pinned ZMK (v25.11, well past the v24.08-beta1
 // threshold required for `hold-while-undecided`).
 
-// ENFORCE_BILATERAL — on. When ANY left-hand HRM is held, the bilateral_lh
-// layer activates and overrides A/S/D/F to plain &kp (no hold-tap). Same for
-// right hand. This means: once you commit to a modifier on the left, your left
-// hand can ONLY type letters (no more accidental Cmd+A from same-hand chords).
-// Same-hand modifier chords are intentionally lost — use the OTHER hand to
-// reach the modified key. This is the "one hand holds, other hand taps"
-// touch-typing convention enforced by the firmware itself.
+// BILATERAL COMBINATIONS — enforced by the positional hold-tap, not by a
+// dedicated layer. Each HRM's hold-trigger-key-positions lists the OPPOSITE
+// hand, so a same-hand key pressed during the hold window makes the HRM resolve
+// to a tap (letter) instead of a modifier. That is what stops same-hand
+// misfires while typing. A deliberately held modifier still applies to whatever
+// you press next, same hand included — that is inherent to home row mods
+// (sunaku's behave the same way), not something the firmware can prevent.
 
 // Glove80 key-position numbering (sunaku's layout — used by hold-trigger-key-positions).
 // 80 keys total, numbered 0–79. Left hand = positions 0–51, 64–71, plus split
@@ -183,19 +201,19 @@
 // =============================================================================
 // LAYER NUMBERS
 // =============================================================================
-// V1 layers preserved. V2 added two bilateral enforcement layers underneath.
-// V3 adds CURSOR + MOUSE + three Mouse speed sublayers.
+// V1 layers preserved. V3 adds CURSOR + MOUSE + three Mouse speed sublayers.
+// V4 adds NUMBER + SYMBOL (Miryoku-style bilateral layers).
 #define DEFAULT      0
 #define LOWER        1
 #define MAGIC        2
 #define FACTORY_TEST 3
-#define BILATERAL_LH 4
-#define BILATERAL_RH 5
-#define CURSOR       6
-#define MOUSE        7
-#define MOUSE_SLOW   8
-#define MOUSE_FAST   9
-#define MOUSE_WARP   10
+#define CURSOR       4
+#define MOUSE        5
+#define MOUSE_SLOW   6
+#define MOUSE_FAST   7
+#define MOUSE_WARP   8
+#define NUMBER       9
+#define SYMBOL       10
 
 / {
     behaviors {
@@ -236,8 +254,8 @@
         //     key is on the OPPOSITE hand. Same-hand presses force a tap.
         //   - hold-trigger-on-release: defers the position check until release,
         //     letting fast rolls on the same hand resolve cleanly as taps.
-        //   - bindings = <hold-macro>, <&kp>: hold side is a macro that
-        //     ALSO activates the bilateral layer; tap side is just the letter.
+        //   - bindings = <&kp>, <&kp>: hold side presses the modifier, the
+        //     tap side types the letter (standard mod-tap).
         //   - hold-while-undecided: on the index/shift HRMs only, enables
         //     SHIFT_FORGIVENESS (release without other keypress → type the
         //     letter instead of nothing).
@@ -252,7 +270,7 @@
             tapping-term-ms = <PINKY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_lh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -265,7 +283,7 @@
             tapping-term-ms = <RINGY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_lh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -278,7 +296,7 @@
             tapping-term-ms = <MIDDY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_lh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -292,7 +310,7 @@
             tapping-term-ms = <INDEX_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_lh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <RIGHT_HAND_KEYS>;
             hold-trigger-on-release;
             hold-while-undecided;
@@ -309,7 +327,7 @@
             tapping-term-ms = <INDEX_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_rh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
             hold-while-undecided;
@@ -323,7 +341,7 @@
             tapping-term-ms = <MIDDY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_rh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -336,7 +354,7 @@
             tapping-term-ms = <RINGY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_rh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -349,7 +367,7 @@
             tapping-term-ms = <PINKY_HOLDING_TIME>;
             quick-tap-ms = <HOMEY_REPEAT_DECAY>;
             require-prior-idle-ms = <HOMEY_STREAK_DECAY>;
-            bindings = <&bilateral_hold_rh>, <&kp>;
+            bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <LEFT_HAND_KEYS>;
             hold-trigger-on-release;
         };
@@ -382,6 +400,37 @@
             flavor = "tap-preferred";
             tapping-term-ms = <250>;
             bindings = <&kp>, <&kp>;
+        };
+
+        // V4: thumb layer-tap. Tap = the keycode, hold = the layer.
+        //   &lt_thumb CURSOR BSPC  → tap Backspace, hold Cursor (LH thumb)
+        //   &lt_thumb MOUSE  RET   → tap Enter,     hold Mouse  (RH thumb)
+        //
+        // flavor = "balanced": the layer engages as soon as you press another
+        // key while holding, but a quick press-and-release still emits the tap
+        // key. This is sunaku's thumb flavor — snappier for layer access than
+        // tap-preferred, which would force you to wait out the full hold first.
+        lt_thumb: lt_thumb {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LT_THUMB";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <THUMB_HOLDING_TIME>;
+            quick-tap-ms = <THUMB_REPEAT_DECAY>;
+            bindings = <&mo>, <&kp>;
+        };
+
+        // V4: dedicated spacebar layer-tap for the Symbol layer. Same balanced
+        // flavor as lt_thumb, but its own quick-tap (SPACE_REPEAT_DECAY) so the
+        // most-pressed key stays snappy. Tap = Space, hold = Symbol.
+        lt_space: lt_space {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LT_SPACE";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <SPACE_HOLDING_TIME>;
+            quick-tap-ms = <SPACE_REPEAT_DECAY>;
+            bindings = <&mo>, <&kp>;
         };
     };
 
@@ -432,56 +481,6 @@
         };
 
         // =====================================================================
-        // V2 bilateral-hold macros (one per side).
-        // =====================================================================
-        // These are the HOLD side of every HRM behavior. When invoked, they:
-        //   1. Press the requested modifier (LCTL / LALT / LGUI / LSFT)
-        //   2. Activate the bilateral layer for this hand
-        //   3. Wait for the HRM key to be released
-        //   4. Deactivate the bilateral layer
-        //   5. Release the modifier
-        //
-        // Pattern explained:
-        //   &macro_param_1to1 — copies the macro's parameter (the modifier
-        //     code) into the FIRST slot of the NEXT binding. So <&kp
-        //     MACRO_PLACEHOLDER> becomes <&kp LSFT> when invoked as
-        //     "&bilateral_hold_lh LSFT".
-        //   &macro_press <X> — presses X without releasing it.
-        //   &macro_pause_for_release — pauses execution until the user
-        //     releases the HRM key; the rest of the macro runs on release.
-        //   &macro_release <X> — releases X.
-
-        bilateral_hold_lh: bilateral_hold_lh {
-            label = "BILATERAL_HOLD_LH";
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings
-                = <&macro_param_1to1>
-                , <&macro_press &kp MACRO_PLACEHOLDER>
-                , <&macro_press &mo BILATERAL_LH>
-                , <&macro_pause_for_release>
-                , <&macro_release &mo BILATERAL_LH>
-                , <&macro_param_1to1>
-                , <&macro_release &kp MACRO_PLACEHOLDER>
-                ;
-        };
-
-        bilateral_hold_rh: bilateral_hold_rh {
-            label = "BILATERAL_HOLD_RH";
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings
-                = <&macro_param_1to1>
-                , <&macro_press &kp MACRO_PLACEHOLDER>
-                , <&macro_press &mo BILATERAL_RH>
-                , <&macro_pause_for_release>
-                , <&macro_release &mo BILATERAL_RH>
-                , <&macro_param_1to1>
-                , <&macro_release &kp MACRO_PLACEHOLDER>
-                ;
-        };
-
-        // =====================================================================
         // V3: selection-helper macros for the Cursor layer.
         // =====================================================================
 
@@ -515,6 +514,27 @@
             tap-ms = <1>;
             bindings = <&kp LA(LEFT)>, <&kp LA(LS(RIGHT))>;
         };
+
+        // V4: text macros used by the Symbol layer (ported from sunaku).
+        // dot_dot types ".." (for ../ paths); triple_backtick types "```"
+        // (markdown code fences).
+        dot_dot: dot_dot {
+            label = "DOT_DOT";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings = <&macro_tap &kp DOT &kp DOT>;
+        };
+
+        triple_backtick: triple_backtick {
+            label = "TRIPLE_BACKTICK";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <0>;
+            bindings = <&macro_tap &kp GRAVE &kp GRAVE &kp GRAVE>;
+        };
     };
 
     keymap {
@@ -530,10 +550,13 @@
             // |  TAB  |  Q  |  W  |  E   |  R   |  T   |                                                 |  Y   |   U   |   I   |  O   |   P   |   \  |
             // |  ESC  | A*  | S*  |  D*  |  F*  |  G   |                                                 |  H   |  J*   |  K*   | L*   |  ;*   |   '  |
             // |   `   |  Z  |  X  |  C   |  V   |  B   | LSHFT | LCTRL | LOWER | | LGUI  | RCTRL | RSHFT |  N   |   M   |   ,   |  .   |   /   | PGUP |
-            // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |
+            // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC† | DEL†  | LALT  | | RALT  | RET†  | SPACE†|      |  UP   | DOWN  |  [   |   ]   | PGDN |
             //
             // Starred keys (A* S* D* F* J* K* L* ;*) on row 4 are HRM hold-taps:
             //   Tap → letter. Hold → modifier (CAGS on macOS: Ctrl/Alt/Cmd/Shift).
+            // Daggered thumb keys (BSPC† DEL† RET† SPACE†) are layer-taps:
+            //   BSPC† → tap Bksp, hold Cursor.    DEL†  → tap Del, hold Number.
+            //   RET†  → tap Enter, hold Mouse.    SPACE† → tap Space, hold Symbol.
 
             bindings = <
             &kp F1         &kp F2   &kp F3      &kp F4      &kp F5                                                                                                                  &kp F6  &kp F7                &kp F8                &kp F9                &kp F10
@@ -541,7 +564,7 @@
             &kp TAB        &kp Q    &kp W       &kp E       &kp R       &kp T                                                                                               &kp Y   &kp U   &kp I                 &kp O                 &kp P                 &kp BSLH
             &kp ESC        &hml_pinky LH_PINKY_MOD A   &hml_ringy LH_RINGY_MOD S   &hml_middy LH_MIDDY_MOD D   &hml_index LH_INDEX_MOD F   &kp G                                     &kp H   &hmr_index RH_INDEX_MOD J   &hmr_middy RH_MIDDY_MOD K   &hmr_ringy RH_RINGY_MOD L   &hmr_pinky RH_PINKY_MOD SEMI   &kp SQT
             &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &hyper_mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &wispr LG(F18) LG(F19)                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
-            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &kp BSPC    &kp DEL     &mo CURSOR &mo MOUSE  &kp RET   &kp SPACE                                     &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
+            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &lt_thumb CURSOR BSPC  &lt_thumb NUMBER DEL  &kp LALT   &kp RALT  &lt_thumb MOUSE RET  &lt_space SYMBOL SPACE                  &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
             >;
         };
 
@@ -578,42 +601,6 @@
             &kp N3   &kp N9   &kp N5   &kp N1   &kp N7   &kp N2                                                            &kp N2   &kp N7   &kp N1   &kp N5   &kp N9   &kp N3
             &kp N4   &kp N0   &kp N6   &kp N2   &kp N8   &kp N3   &kp N4   &kp N5   &kp N6      &kp N6   &kp N5   &kp N4   &kp N3   &kp N8   &kp N2   &kp N6   &kp N0   &kp N4
             &kp N5   &kp N1   &kp N7   &kp N3   &kp N9            &kp N7   &kp N8   &kp N9      &kp N9   &kp N8   &kp N7            &kp N9   &kp N3   &kp N7   &kp N1   &kp N5
-            >;
-        };
-
-        // bilateral_lh_layer: ENFORCE_BILATERAL override for the LEFT hand.
-        // Activated by any LEFT-hand HRM hold (via the &bilateral_hold_lh macro).
-        // While active, the four LH home-row keys (A S D F) become plain &kp
-        // letters — no hold-tap, no second modifier. This prevents same-hand
-        // modifier chords like "Cmd held on D, then A pressed → Cmd+A". Instead
-        // you'd get "Cmd+A only if A is on the OPPOSITE hand", which on QWERTY
-        // it isn't, so you need to use the RH Cmd (K) for one-handed Cmd+A.
-        //
-        // &trans on every other position falls through to default_layer.
-        // (Right-hand HRMs on default_layer still work for chording.)
-        bilateral_lh_layer {
-            bindings = <
-            &trans  &trans  &trans  &trans  &trans                                                                                                          &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &kp A   &kp S   &kp D   &kp F   &trans                                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans                                      &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans      &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
-            >;
-        };
-
-        // bilateral_rh_layer: ENFORCE_BILATERAL override for the RIGHT hand.
-        // Same mechanism, mirrored: J K L ; become plain &kp letters when any
-        // RH HRM is held. Same-hand RH chords are blocked; use the LH HRMs for
-        // one-handed shortcuts on the right side.
-        bilateral_rh_layer {
-            bindings = <
-            &trans  &trans  &trans  &trans  &trans                                                                                                          &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                                          &trans  &kp J   &kp K   &kp L   &kp SEMI &trans
-            &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans                                      &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans      &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
             >;
         };
 
@@ -696,6 +683,39 @@
             &trans  &trans  &trans  &trans  &trans  &trans                                                                          &trans  &trans  &trans  &trans  &trans  &trans
             &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans  &trans  &trans  &trans  &trans
             &trans  &trans  &trans  &trans  &trans          &trans  &trans  &trans  &trans  &trans  &trans                                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        // V4: NUMBER layer (Miryoku-style, accessed by holding the LH Delete
+        // thumb). RIGHT hand becomes a numpad — 7 8 9 / 4 5 6 / 1 2 3 / 0 — with
+        // operators (- + * / = . , %) and brackets around it; hex letters A-E
+        // ride the top row. LEFT hand keeps modifiers (Ctrl/Alt/Cmd/Shift, so
+        // Cmd+digit works), select/find/undo/redo, and whitespace. The Delete
+        // access key holds &tog so you can LOCK the layer for long number entry.
+        number_layer {
+            bindings = <
+            &none       &none              &none              &none              &none                                                                                                  &kp A         &kp B       &kp C       &kp D       &kp E
+            &none       &kp ESC            &kp INS            &kp LS(TAB)        &kp DEL            &none                                                                  &kp LS(BSLH)  &kp LS(N3)  &kp LS(N4)  &kp LS(N6)  &kp LS(GRAVE)  &kp LS(N1)
+            &none       &kp RET            &kp SPACE          &kp TAB            &kp BSPC           &kp N0                                                                 &kp LS(G)     &kp N7      &kp N8      &kp N9      &kp LS(SEMI)   &kp LS(N5)
+            &sk LSHFT   &kp LH_PINKY_MOD   &kp LH_RINGY_MOD   &kp LH_MIDDY_MOD   &kp LH_INDEX_MOD   &kp X                                                                  &kp K         &kp N4      &kp N5      &kp N6      &kp MINUS      &kp LS(EQUAL)
+            &kp E       &select_all        &select_line       &select_word       &kp LG(F)          &kp F   &none  &none  &none      &kp LS(COMMA)  &kp EQUAL  &kp COMMA     &kp J         &kp N1      &kp N2      &kp N3      &kp FSLH       &kp LS(N8)
+            &kp LS(MINUS)  &kp LG(Z)       &kp LG(LS(Z))      &kp LG(LS(G))      &kp LG(G)                  &none  &tog NUMBER  &none  &kp LS(DOT)  &kp DOT  &kp N0                  &kp LS(N9)    &kp LBKT    &kp RBKT    &kp LS(N0)  &kp LS(N2)
+            >;
+        };
+
+        // V4: SYMBOL layer (Miryoku-style, accessed by holding the RH Space
+        // thumb via the dedicated lt_space). LEFT hand becomes a symbol pad with
+        // the common symbols on/around the home row (# ^ = _ $ * / ! [ { } ] ? /
+        // ~ < | - > /). RIGHT hand keeps modifiers, whitespace, and a couple of
+        // text macros (.. and ```). The Space access key holds &tog to lock it.
+        symbol_layer {
+            bindings = <
+            &none         &none           &none           &none           &none                                                                                                       &none      &none      &none      &none      &none
+            &none         &kp GRAVE       &kp LS(N9)      &kp LS(N0)      &kp SEMI        &kp COMMA                                                                          &none      &none      &none      &none      &none      &none
+            &kp LS(N1)    &kp LBKT        &kp LS(LBKT)    &kp LS(RBKT)    &kp RBKT        &kp LS(FSLH)                                                                       &kp DOT    &kp DEL    &kp LS(TAB)  &kp INS  &kp ESC    &none
+            &kp LS(N3)    &kp LS(N6)      &kp EQUAL       &kp LS(MINUS)   &kp LS(N4)      &kp LS(N8)                                                                         &kp COMMA  &kp BSPC   &kp TAB    &kp SPACE  &kp RET    &triple_backtick
+            &kp LS(GRAVE) &kp LS(COMMA)   &kp LS(BSLH)    &kp MINUS       &kp LS(DOT)     &kp FSLH   &kp BSLH  &kp DOT  &kp LS(N8)  &none  &none  &none                      &kp SEMI   &kp LS(SQT)  &kp SQT  &kp GRAVE  &kp BSLH   &trans
+            &dot_dot      &kp LS(N7)      &kp SQT         &kp LS(SQT)     &kp LS(EQUAL)              &kp LS(N5)  &kp LS(SEMI)  &kp LS(N2)  &none  &none  &tog SYMBOL          &kp RH_INDEX_MOD  &kp RH_MIDDY_MOD  &kp RH_RINGY_MOD  &kp RH_PINKY_MOD  &none
             >;
         };
     };
