@@ -31,6 +31,12 @@ This rewrites `docs/keymap.yaml` and `docs/keymap.svg` from `config/glove80.keym
 
 Requires `uv` on the host. `keymap-drawer` is fetched on demand via `uvx`; no global install.
 
+## Interactive keymap site (`docs/`)
+
+A hand-built cheat sheet + key tester lives in `docs/` (`index.html`, `styles.css`, `app.js`, `keymap-data.js`) and is published via GitHub Pages. It is **hand-maintained, not auto-generated.**
+
+**Keep it in sync with the keymap:** update `docs/keymap-data.js` (layer labels, geometry, combos) and any affected layer/activation text in `docs/app.js` to match `config/glove80.keymap` — **before any merge to `main`, and after building any version you intend to flash.** The data was originally seeded from `docs/keymap.yaml`; re-parse it (`uv run --with pyyaml ...`) for a fresh starting point if a lot changed. Preview locally with `python3 -m http.server --directory docs`.
+
 ## Test
 
 **Agent-side, after every build:**
