@@ -36,16 +36,16 @@ layers:
   - P
   - \
   - ESC
-  - {t: A, h: '&bilateral_hold_lh LCTL'}
-  - {t: S, h: '&bilateral_hold_lh LALT'}
-  - {t: D, h: '&bilateral_hold_lh LGUI'}
-  - {t: F, h: '&bilateral_hold_lh LSFT'}
+  - {t: A, h: LCTL}
+  - {t: S, h: LALT}
+  - {t: D, h: LGUI}
+  - {t: F, h: LSFT}
   - G
   - H
-  - {t: J, h: '&bilateral_hold_rh LSFT'}
-  - {t: K, h: '&bilateral_hold_rh LGUI'}
-  - {t: L, h: '&bilateral_hold_rh LALT'}
-  - {t: ;, h: '&bilateral_hold_rh LCTL'}
+  - {t: J, h: LSFT}
+  - {t: K, h: LGUI}
+  - {t: L, h: LALT}
+  - {t: ;, h: LCTL}
   - ''''
   - '`'
   - Z
@@ -70,12 +70,12 @@ layers:
   - END
   - LEFT
   - RIGHT
-  - BSPC
-  - DEL
-  - cursor
-  - mouse
-  - RET
-  - SPACE
+  - {t: BSPC, h: cursor}
+  - {t: DEL, h: number}
+  - LALT
+  - RALT
+  - {t: RET, h: mouse}
+  - {t: SPACE, h: symbol}
   - UP
   - DOWN
   - '['
@@ -246,168 +246,6 @@ layers:
   factory_test: ['0', '6', '2', '8', '4', '4', '8', '2', '6', '0', '1', '7', '3', '9', '5', '0', '0', '5', '9', '3', '7', '1', '2', '8', '4', '0', '6', '1', '1',
     '6', '0', '4', '8', '2', '3', '9', '5', '1', '7', '2', '2', '7', '1', '5', '9', '3', '4', '0', '6', '2', '8', '3', '4', '5', '6', '6', '5', '4', '3', '8', '2',
     '6', '0', '4', '5', '1', '7', '3', '9', '7', '8', '9', '9', '8', '7', '9', '3', '7', '1', '5']
-  bilateral_lh:
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - A
-  - S
-  - D
-  - F
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  bilateral_rh:
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - J
-  - K
-  - L
-  - ;
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
   cursor:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -478,9 +316,9 @@ layers:
   - Gui+Sft+Z
   - Gui+Sft+G
   - Gui+G
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
   - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -562,8 +400,8 @@ layers:
   - '&mkp LCLK'
   - '&mkp RCLK'
   - '&mkp MB4'
-  - {type: held}
   - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -643,8 +481,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
   - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -724,8 +562,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
   - {t: ▽, type: trans}
+  - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -805,6 +643,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {type: held}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -812,4 +651,172 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  number:
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - A
+  - B
+  - C
+  - D
+  - E
+  - ''
+  - ESC
+  - INS
+  - Sft+TAB
+  - DEL
+  - ''
+  - Sft+\
+  - Sft+3
+  - Sft+4
+  - Sft+6
+  - Sft+`
+  - Sft+1
+  - ''
+  - RET
+  - SPACE
+  - TAB
+  - BSPC
+  - '0'
+  - Sft+G
+  - '7'
+  - '8'
+  - '9'
+  - Sft+;
+  - Sft+5
+  - {t: LSHFT, h: sticky}
+  - LCTL
+  - LALT
+  - LGUI
+  - LSFT
+  - X
+  - K
+  - '4'
+  - '5'
+  - '6'
+  - '-'
+  - Sft+=
+  - E
+  - '&select_all'
+  - '&select_line'
+  - '&select_word'
+  - Gui+F
+  - F
+  - ''
+  - ''
+  - ''
+  - Sft+,
+  - '='
+  - ','
+  - J
+  - '1'
+  - '2'
+  - '3'
+  - /
+  - Sft+8
+  - Sft+-
+  - Gui+Z
+  - Gui+Sft+Z
+  - Gui+Sft+G
+  - Gui+G
+  - ''
+  - {t: number, h: toggle, type: held}
+  - ''
+  - Sft+.
+  - .
+  - '0'
+  - Sft+9
+  - '['
+  - ']'
+  - Sft+0
+  - Sft+2
+  symbol:
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - '`'
+  - Sft+9
+  - Sft+0
+  - ;
+  - ','
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - Sft+1
+  - '['
+  - Sft+[
+  - Sft+]
+  - ']'
+  - Sft+/
+  - .
+  - DEL
+  - Sft+TAB
+  - INS
+  - ESC
+  - ''
+  - Sft+3
+  - Sft+6
+  - '='
+  - Sft+-
+  - Sft+4
+  - Sft+8
+  - ','
+  - BSPC
+  - TAB
+  - SPACE
+  - RET
+  - '&triple_backtick'
+  - Sft+`
+  - Sft+,
+  - Sft+\
+  - '-'
+  - Sft+.
+  - /
+  - \
+  - .
+  - Sft+8
+  - ''
+  - ''
+  - ''
+  - ;
+  - Sft+'
+  - ''''
+  - '`'
+  - \
   - {t: ▽, type: trans}
+  - '&dot_dot'
+  - Sft+7
+  - ''''
+  - Sft+'
+  - Sft+=
+  - Sft+5
+  - Sft+;
+  - Sft+2
+  - ''
+  - ''
+  - {t: symbol, h: toggle, type: held}
+  - LSFT
+  - LGUI
+  - LALT
+  - LCTL
+  - ''
+combos:
+- p: [52, 69]
+  k: '&mod_tab_chord LGUI 4'
+  l: [default]
+- p: [53, 70]
+  k: '&mod_tab_chord LCTL 4'
+  l: [default]

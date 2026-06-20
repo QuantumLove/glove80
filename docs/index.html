@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glove80 Keymap — Cheat Sheet &amp; Key Tester</title>
+  <meta name="description" content="Interactive cheat sheet for a Glove80 ZMK keymap, plus an output-based key tester.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="title-block">
+        <h1>Glove80 Keymap</h1>
+        <p class="tagline">Interactive cheat sheet for every layer &mdash; plus an output-based key tester.</p>
+      </div>
+      <div class="header-controls">
+        <label class="toggle">
+          <input type="checkbox" id="test-toggle">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">Test mode</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Layer tabs -->
+    <nav class="layer-tabs" id="layer-tabs" aria-label="Keymap layers"></nav>
+
+    <!-- How to reach the selected layer -->
+    <p class="layer-activation" id="layer-activation"></p>
+
+    <!-- Legend -->
+    <ul class="legend" id="legend">
+      <li><span class="swatch swatch-plain"></span>Letter / number / punctuation</li>
+      <li><span class="swatch swatch-mod"></span>Modifier (hold)</li>
+      <li><span class="swatch swatch-layer"></span>Layer access</li>
+      <li><span class="swatch swatch-macro"></span>Macro / behavior</li>
+      <li><span class="swatch swatch-trans"></span>Transparent / empty</li>
+    </ul>
+
+    <!-- Board -->
+    <section class="board-wrap" aria-label="Keyboard layout">
+      <div class="board-scroll">
+        <div class="board" id="board"></div>
+      </div>
+    </section>
+
+    <!-- Tester panel -->
+    <section class="tester" id="tester" hidden aria-live="polite">
+      <div class="tester-grid">
+        <div class="readout">
+          <h2>Key tester</h2>
+          <p class="tester-note">
+            Shows what your keyboard <strong>sent</strong>. The browser can't see firmware
+            layers, and macOS grabs OS shortcuts like Cmd+Tab before the page &mdash; so use this
+            for letters / numbers / symbols and in-app keys.
+          </p>
+          <div class="readout-fields">
+            <div class="field">
+              <span class="field-label">Character</span>
+              <span class="field-value" id="ro-key">&mdash;</span>
+            </div>
+            <div class="field">
+              <span class="field-label">event.code</span>
+              <span class="field-value mono" id="ro-code">&mdash;</span>
+            </div>
+          </div>
+          <div class="mods" id="ro-mods">
+            <span class="mod-chip" data-mod="shift">Shift</span>
+            <span class="mod-chip" data-mod="ctrl">Ctrl</span>
+            <span class="mod-chip" data-mod="alt">Alt</span>
+            <span class="mod-chip" data-mod="meta">Meta</span>
+          </div>
+        </div>
+        <div class="log-panel">
+          <h3>Recent events</h3>
+          <ul class="event-log" id="event-log"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Generated from <code>keymap.yaml</code> (keymap-drawer). Vanilla HTML/CSS/JS &mdash; works offline.</p>
+  </footer>
+
+  <script src="keymap-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

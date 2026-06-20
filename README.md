@@ -4,15 +4,21 @@ Personal Glove80 firmware. Goal: keyboard-only macOS workflow, built one iterati
 
 ## Status
 
-**V3 (current).** All V1 stock features preserved.
+**V5 (current).** All V1 stock features preserved.
 
 - **V1** baseline — Moergo's factory keymap, locally buildable via Docker. Lives at commit `a61129d`.
 - **V2** — sunaku-flavored home-row mods on A/S/D/F and J/K/L/; (CAGS, macOS-tuned).
 - **V3** adds:
-  - **Cursor layer** — hold LH lower-inner thumb. Arrows, page nav, find, undo/redo, cut/copy/paste, sticky shift, select_word/line/all.
-  - **Mouse layer** — hold RH lower-inner thumb. Inverted-T cursor cluster, three buttons + MB4/MB5, scroll, drag, three speed sublayers (Slow=¼×, Fast=2×, Warp=6×).
+  - **Cursor layer** — tap Backspace / hold the LH Backspace thumb. Arrows, page nav, find, undo/redo, cut/copy/paste, sticky shift, select_word/line/all.
+  - **Mouse layer** — tap Enter / hold the RH Enter thumb. Inverted-T cursor cluster, three buttons + MB4/MB5, scroll, drag, three speed sublayers (Slow=¼×, Fast=2×, Warp=6×).
   - **Hyper** on LH upper-outer thumb (`&hyper_mt HYPER LSHFT`).
   - **Wispr Flow** on RH upper-outer thumb (`&wispr LG(F18) LG(F19)` — Cmd+F18 hold, Cmd+F19 tap).
+- **V4** adds:
+  - **Number layer** — tap Delete / hold the LH Delete thumb. Right-hand numpad (7-8-9/4-5-6/1-2-3/0) + math operators; left hand keeps modifiers, select/find/undo, whitespace.
+  - **Symbol layer** — tap Space / hold the RH Space thumb. Left-hand symbol pad (common symbols on the home row); right hand keeps modifiers + whitespace.
+  - Faster home row (`DIFFICULTY_LEVEL` 3 → 4), thumb cluster remapped (layer access moved onto the Backspace/Delete/Enter/Space thumbs; factory Alt restored on the inner-bottom thumbs), and the dead bilateral-enforcement layers removed (positional hold-tap already does that job).
+- **V5** adds:
+  - **App-switching combos** — pinch the top-left thumb pair (Hyper+Backspace) for Cmd+Tab, the middle pair (Ctrl+Delete) for Ctrl+Tab. Hold the pinch and tap Tab/Shift+Tab on the Cursor layer to cycle; release to commit. Stock-ZMK swapper (`mod_tab_chord`), default layer only.
 
 See [ROADMAP.md](ROADMAP.md) for what's next.
 
@@ -28,7 +34,7 @@ Requires `uv` (`brew install uv`).
 
 ## Home Row Mods
 
-CAGS order, mirrored on both hands. Tap = letter. Hold (300 ms) = modifier. Use the opposite hand for chords; same-hand chords are blocked by design.
+CAGS order, mirrored on both hands. Tap = letter. Hold (~200 ms) = modifier. Use the opposite hand for chords; while typing, a same-hand key resolves the HRM to a letter (positional hold-tap).
 
 ```
 LH home row:  A=Ctrl  S=Alt  D=Cmd  F=Shift  G=plain
@@ -38,10 +44,10 @@ RH home row:                                 H=plain  J=Shift  K=Cmd  L=Alt  ;=C
 Tune sensitivity with one knob in [`config/glove80.keymap`](config/glove80.keymap):
 
 ```
-#define DIFFICULTY_LEVEL 3   // 1=500ms (safe) → 5=100ms (expert)
+#define DIFFICULTY_LEVEL 4   // 1=500ms (safe) → 5=100ms (expert)
 ```
 
-Two safety nets are always on: **shift forgiveness** (release the index HRM without a follow-up → letter, not silence) and **streak decay** (any key in the last 300 ms forces the HRM to resolve as a tap, preventing mid-word misfires).
+Two safety nets are always on: **shift forgiveness** (release the index HRM without a follow-up → letter, not silence) and **streak decay** (any key in the last 200 ms forces the HRM to resolve as a tap, preventing mid-word misfires).
 
 ## Build
 

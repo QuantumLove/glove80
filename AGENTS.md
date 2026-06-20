@@ -31,6 +31,12 @@ This rewrites `docs/keymap.yaml` and `docs/keymap.svg` from `config/glove80.keym
 
 Requires `uv` on the host. `keymap-drawer` is fetched on demand via `uvx`; no global install.
 
+## Interactive keymap site (`docs/`)
+
+A hand-built cheat sheet + key tester lives in `docs/` (`index.html`, `styles.css`, `app.js`, `keymap-data.js`) and is published via GitHub Pages. It is **hand-maintained, not auto-generated.**
+
+**Keep it in sync with the keymap:** update `docs/keymap-data.js` (layer labels, geometry, combos) and any affected layer/activation text in `docs/app.js` to match `config/glove80.keymap` — **before any merge to `main`, and after building any version you intend to flash.** The data was originally seeded from `docs/keymap.yaml`; re-parse it (`uv run --with pyyaml ...`) for a fresh starting point if a lot changed. Preview locally with `python3 -m http.server --directory docs`.
+
 ## Test
 
 **Agent-side, after every build:**
@@ -55,17 +61,20 @@ Full procedure: https://docs.moergo.com/glove80-user-guide/customizing-key-layou
 
 **V1:** stock baseline, Docker build, human-tier verification. Preserved at `a61129d`.
 
-**V2:** V1 + sunaku-flavored home-row mods on A/S/D/F and J/K/L/; in CAGS order. `DIFFICULTY_LEVEL` currently 3 (300 ms hold + 300 ms streak decay). Shift forgiveness and bilateral enforcement on. Two bilateral-enforcement layers.
+**V2:** V1 + sunaku-flavored home-row mods on A/S/D/F and J/K/L/; in CAGS order. `DIFFICULTY_LEVEL` currently 4 (200 ms hold + 200 ms streak decay). Shift forgiveness on. Bilateral combinations enforced by positional hold-tap (opposite-hand trigger), not dedicated layers.
 
 **V3 (current):**
-- CURSOR layer on LH lower-inner thumb (text nav)
-- MOUSE layer on RH lower-inner thumb with three speed sublayers (MOUSE_SLOW/FAST/WARP)
+- CURSOR layer via layer-tap on the LH Backspace thumb — tap Backspace, hold Cursor (text nav)
+- MOUSE layer via layer-tap on the RH Enter thumb — tap Enter, hold Mouse — with three speed sublayers (MOUSE_SLOW/FAST/WARP)
+- NUMBER layer via layer-tap on the LH Delete thumb — tap Delete, hold Number — right-hand numpad + operators, left-hand mods/editing (Miryoku-style)
+- SYMBOL layer via dedicated `lt_space` on the RH Space thumb — tap Space, hold Symbol — left-hand symbol pad, right-hand mods/whitespace (Miryoku-style)
+- App-switching combos (sunaku `mod_tab_chord` swapper, default layer only): left-thumb pinches — Hyper+Backspace = Cmd+Tab, Ctrl+Delete = Ctrl+Tab — hold the modifier + Cursor layer, tap Tab/Shift+Tab to cycle, release to commit
 - Hyper on LH upper-outer thumb (`&hyper_mt HYPER LSHFT`)
 - Wispr Flow on RH upper-outer thumb (`&wispr LG(F18) LG(F19)`)
 - `CONFIG_ZMK_POINTING=y`, motion tuned via `&mmv`/`&msc` overrides, sublayer speed scaling via `&mmv_input_listener` + `zip_xy_scaler`
 - Visual keymap diagrams via `bin/draw-keymap.sh`
 
-**Out of scope** (tracked in [ROADMAP.md](ROADMAP.md)): Symbols/Numpad layer (V4), app-switching combos (V5), OS integrations (V6+), GitHub Actions CI.
+**Out of scope** (tracked in [ROADMAP.md](ROADMAP.md)): app-switching combos (V5), OS integrations (V6+), GitHub Actions CI.
 
 ## Working conventions
 
@@ -88,12 +97,11 @@ If a task requires anything outside the current scope, **HALT**. Surface the fin
 - **devicetree** — Zephyr's config-as-code syntax; `.keymap` files are devicetree source
 - **HRM** (Home Row Mod) — letter on tap, modifier on hold
 - **hold-tap behavior** — one key, two outputs, chosen by tap vs hold (`&mt`, `&lt`, our `hml_*`/`hmr_*`)
-- **positional hold-tap** — hold-tap that also checks which other key was pressed during the hold window; same-hand → tap, opposite-hand → hold. Primary anti-misfire mechanism
-- **bilateral enforcement layer** — overrides same-hand HRM positions to plain `&kp` while an HRM on that hand is held
+- **positional hold-tap** — hold-tap that also checks which other key was pressed during the hold window; same-hand → tap, opposite-hand → hold. Primary anti-misfire mechanism and how bilateral combinations are enforced
 - **`tapping-term-ms`** — hold-time threshold (lower = more sensitive)
 - **`require-prior-idle-ms`** — streak decay; blocks HRM hold if any key was pressed in the last N ms
 - **`hold-while-undecided`** — pre-press the hold side so a no-follow-up release still emits the tap letter (powers shift forgiveness)
 - **CAGS** — Ctrl/Alt/Cmd/Shift pinky-to-index, macOS-tuned (Cmd lands on the strong middle)
-- **DIFFICULTY_LEVEL** — sunaku's HRM sensitivity preset (1=500 ms novice → 5=100 ms expert). Currently 3
+- **DIFFICULTY_LEVEL** — sunaku's HRM sensitivity preset (1=500 ms novice → 5=100 ms expert). Currently 4
 - **mouse subsystem** — ZMK's pointer emulation (`&mkp`, `&mmv`, `&msc`); enabled via `CONFIG_ZMK_POINTING=y`
 - **input listener / `zip_xy_scaler`** — ZMK input-processor pipeline that scales mouse-move values based on which layer is co-active. Drives MOUSE_SLOW/FAST/WARP
