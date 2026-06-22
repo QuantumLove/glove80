@@ -807,11 +807,12 @@
         //   right home  H/J/K/L = pane left/down/up/right
         //   left        S=session-tree  D=detach  Z=zoom  C=new-window  V=split|  B=split_
         //   right       N=next-window   M=prev-window
+        //   right top   O = copy pane cwd to Mac clipboard (VS Code bridge; pairs with tmux.conf `bind o`)
         tmux_layer {
             bindings = <
             &trans  &trans  &trans  &trans  &trans                                                                                      &trans  &trans  &trans  &trans  &trans
             &trans  &trans  &trans  &trans  &trans  &trans                                                                      &trans  &trans  &trans  &trans  &trans  &trans
-            &trans  &trans  &trans  &trans  &trans  &trans                                                                      &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                      &trans  &trans  &trans  &tmux_key O  &trans  &trans
             &trans  &trans  &tmux_key S  &tmux_key D  &trans  &trans                                                            &tmux_key H  &tmux_key J  &tmux_key K  &tmux_key L  &trans  &trans
             &trans  &tmux_key Z  &trans  &tmux_key C  &tmux_key LS(BSLH)  &tmux_key LS(MINUS)  &trans &trans &trans  &trans &trans &trans  &tmux_key N  &tmux_key P  &trans  &trans  &trans  &trans
             &trans  &trans  &trans  &trans  &trans  &trans &trans &trans  &trans &trans &trans  &trans  &trans  &trans  &trans  &trans

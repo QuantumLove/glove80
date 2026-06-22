@@ -14,7 +14,7 @@ What's shipped and what's next. Priority queue, not a promise.
 
 - **V5 — App-switching combos** — left-thumb pinch combos via sunaku's `mod_tab_chord` swapper: Cmd+Tab (Hyper+Backspace) and Ctrl+Tab (Ctrl+Delete), holding the modifier across Tab/Shift+Tab taps on the Cursor layer. Same branch, not yet flashed. (Opt+Tab available, not added.)
 
-- **tmux thumb + layer (branch `feat-tmux-thumb`, not yet flashed)** — repurpose the redundant inner thumbs: RAlt → tmux key (tap = prefix `Ctrl+Space`, hold = a tmux command layer); LGui → Raycast (`Cmd+Space`). Pairs with the dotfiles `tmux.conf`. The broader "macOS integration" (below) now lives in the dotfiles repo, not firmware.
+- **tmux thumb + layer (branch `feat-tmux-thumb`, not yet flashed)** — repurpose the redundant inner thumbs: RAlt → tmux key (tap = prefix `Ctrl+Space`, hold = a tmux command layer, incl. `o` = copy cwd to the Mac clipboard for the VS Code bridge); LGui → Raycast (`Cmd+Space`). Pairs with the dotfiles `tmux.conf`. The broader "macOS integration" (below) now lives in the dotfiles repo, not firmware.
 
 ## Next
 

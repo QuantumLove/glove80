@@ -20,7 +20,7 @@ Personal Glove80 firmware. Goal: keyboard-only macOS workflow, built one iterati
 - **V5** adds:
   - **App-switching combos** — pinch the top-left thumb pair (Hyper+Backspace) for Cmd+Tab, the middle pair (Ctrl+Delete) for Ctrl+Tab. Hold the pinch and tap Tab/Shift+Tab on the Cursor layer to cycle; release to commit. Stock-ZMK swapper (`mod_tab_chord`), default layer only.
 - **V6** (branch `feat-tmux-thumb`, not yet flashed) adds:
-  - **tmux thumb** — RH inner-bottom thumb (was RAlt): tap = tmux prefix `Ctrl+Space`, hold = the **tmux layer** (home row → one-press tmux: pane nav h/j/k/l, new window, session tree, zoom, detach, splits, next/prev window). Reuses a redundant modifier thumb (Alt is still on the home row).
+  - **tmux thumb** — RH inner-bottom thumb (was RAlt): tap = tmux prefix `Ctrl+Space`, hold = the **tmux layer** (home row → one-press tmux: pane nav h/j/k/l, new window, session tree, zoom, detach, splits, next/prev window, and `o` to copy the pane's cwd to the Mac clipboard for the VS Code bridge). Reuses a redundant modifier thumb (Alt is still on the home row).
   - **Raycast thumb** — RH upper-inner thumb (was LGui): emits `Cmd+Space` (Raycast). Reuses a redundant modifier thumb (Cmd is still on the home row).
   - Pairs with the dotfiles `tmux.conf` (prefix `Ctrl+Space`). The interactive `docs/keymap-data.js` viewer is hand-maintained and lags V6 — it gets regenerated when the viewer migrates into the dotfiles React app.
 
