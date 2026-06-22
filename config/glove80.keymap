@@ -803,7 +803,6 @@
 
         // tmux layer (hold the RH tmux thumb). Home row + neighbours become one-press
         // tmux commands via tmux_key (each sends prefix Ctrl+Space, then the key).
-        // Starter map — tune the op->key assignment to taste:
         //   right home  H/J/K/L = pane left/down/up/right
         //   left        S=session-tree  D=detach  Z=zoom  C=new-window  V=split|  B=split_
         //   right       N=next-window   M=prev-window
