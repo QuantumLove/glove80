@@ -214,6 +214,7 @@
 #define MOUSE_WARP   8
 #define NUMBER       9
 #define SYMBOL       10
+#define TMUX         11
 
 / {
     behaviors {
@@ -480,6 +481,20 @@
                   <&bt BT_SEL 3>;
         };
 
+        // tmux helper: send the prefix (Ctrl+Space) then the passed key, so the
+        // tmux layer can map one keypress to a full "prefix then X" command.
+        tmux_key: tmux_key {
+            label = "TMUX_KEY";
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            wait-ms = <5>;
+            tap-ms = <5>;
+            bindings
+                = <&macro_tap &kp LC(SPACE)>
+                , <&macro_param_1to1>
+                , <&macro_tap &kp MACRO_PLACEHOLDER>;
+        };
+
         // =====================================================================
         // V3: selection-helper macros for the Cursor layer.
         // =====================================================================
@@ -630,8 +645,8 @@
             &kp EQUAL      &kp N1   &kp N2      &kp N3      &kp N4      &kp N5                                                                                              &kp N6  &kp N7  &kp N8                &kp N9                &kp N0                &kp MINUS
             &kp TAB        &kp Q    &kp W       &kp E       &kp R       &kp T                                                                                               &kp Y   &kp U   &kp I                 &kp O                 &kp P                 &kp BSLH
             &kp ESC        &hml_pinky LH_PINKY_MOD A   &hml_ringy LH_RINGY_MOD S   &hml_middy LH_MIDDY_MOD D   &hml_index LH_INDEX_MOD F   &kp G                                     &kp H   &hmr_index RH_INDEX_MOD J   &hmr_middy RH_MIDDY_MOD K   &hmr_ringy RH_RINGY_MOD L   &hmr_pinky RH_PINKY_MOD SEMI   &kp SQT
-            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &hyper_mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LGUI  &kp RCTRL &wispr LG(F18) LG(F19)                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
-            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &lt_thumb CURSOR BSPC  &lt_thumb NUMBER DEL  &kp LALT   &kp RALT  &lt_thumb MOUSE RET  &lt_space SYMBOL SPACE                  &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
+            &kp GRAVE      &kp Z    &kp X       &kp C       &kp V       &kp B   &hyper_mt HYPER LSHFT &kp LCTRL   &layer_td  &kp LG(SPACE)  &kp RCTRL &wispr LG(F18) LG(F19)                        &kp N   &kp M   &kp COMMA             &kp DOT               &kp FSLH              &kp PG_UP
+            &magic MAGIC 0 &kp HOME &kp END     &kp LEFT    &kp RIGHT           &lt_thumb CURSOR BSPC  &lt_thumb NUMBER DEL  &kp LALT   &lt_thumb TMUX LC(SPACE)  &lt_thumb MOUSE RET  &lt_space SYMBOL SPACE                  &kp UP  &kp DOWN              &kp LBKT              &kp RBKT              &kp PG_DN
             >;
         };
 
@@ -783,6 +798,24 @@
             &kp LS(N3)    &kp LS(N6)      &kp EQUAL       &kp LS(MINUS)   &kp LS(N4)      &kp LS(N8)                                                                         &kp COMMA  &kp BSPC   &kp TAB    &kp SPACE  &kp RET    &triple_backtick
             &kp LS(GRAVE) &kp LS(COMMA)   &kp LS(BSLH)    &kp MINUS       &kp LS(DOT)     &kp FSLH   &kp BSLH  &kp DOT  &kp LS(N8)  &none  &none  &none                      &kp SEMI   &kp LS(SQT)  &kp SQT  &kp GRAVE  &kp BSLH   &trans
             &dot_dot      &kp LS(N7)      &kp SQT         &kp LS(SQT)     &kp LS(EQUAL)              &kp LS(N5)  &kp LS(SEMI)  &kp LS(N2)  &none  &none  &tog SYMBOL          &kp RH_INDEX_MOD  &kp RH_MIDDY_MOD  &kp RH_RINGY_MOD  &kp RH_PINKY_MOD  &none
+            >;
+        };
+
+        // tmux layer (hold the RH tmux thumb). Home row + neighbours become one-press
+        // tmux commands via tmux_key (each sends prefix Ctrl+Space, then the key).
+        // Starter map — tune the op->key assignment to taste:
+        //   right home  H/J/K/L = pane left/down/up/right
+        //   left        S=session-tree  D=detach  Z=zoom  C=new-window  V=split|  B=split_
+        //   right       N=next-window   M=prev-window
+        //   right top   O = copy pane cwd to Mac clipboard (VS Code bridge; pairs with tmux.conf `bind o`)
+        tmux_layer {
+            bindings = <
+            &trans  &trans  &trans  &trans  &trans                                                                                      &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                      &trans  &trans  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans                                                                      &trans  &trans  &trans  &tmux_key O  &trans  &trans
+            &trans  &trans  &tmux_key S  &tmux_key D  &trans  &trans                                                            &tmux_key H  &tmux_key J  &tmux_key K  &tmux_key L  &trans  &trans
+            &trans  &tmux_key Z  &trans  &tmux_key C  &tmux_key LS(BSLH)  &tmux_key LS(MINUS)  &trans &trans &trans  &trans &trans &trans  &tmux_key N  &tmux_key P  &trans  &trans  &trans  &trans
+            &trans  &trans  &trans  &trans  &trans  &trans &trans &trans  &trans &trans &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };

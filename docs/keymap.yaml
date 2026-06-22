@@ -56,7 +56,7 @@ layers:
   - {t: LSHFT, h: Ctl+Sft+Gui+LALT}
   - LCTRL
   - '&layer_td'
-  - LGUI
+  - Gui+SPACE
   - RCTRL
   - {t: Gui+F19, h: Gui+F18}
   - N
@@ -73,7 +73,7 @@ layers:
   - {t: BSPC, h: cursor}
   - {t: DEL, h: number}
   - LALT
-  - RALT
+  - {t: Ctl+SPACE, h: tmux}
   - {t: RET, h: mouse}
   - {t: SPACE, h: symbol}
   - UP
@@ -813,6 +813,87 @@ layers:
   - LALT
   - LCTL
   - ''
+  tmux:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&tmux_key O'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&tmux_key S'
+  - '&tmux_key D'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&tmux_key H'
+  - '&tmux_key J'
+  - '&tmux_key K'
+  - '&tmux_key L'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&tmux_key Z'
+  - {t: ▽, type: trans}
+  - '&tmux_key C'
+  - '&tmux_key LS(BSLH)'
+  - '&tmux_key LS(MINUS)'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&tmux_key N'
+  - '&tmux_key P'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
 combos:
 - p: [52, 69]
   k: '&mod_tab_chord LGUI 4'
